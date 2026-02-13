@@ -39,15 +39,26 @@ import { Toggle, toggleVariants } from "@/components/ui/toggle"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { Terminal, CreditCard, User, Settings, Keyboard, LogOut, Plus, Cloud, Github, LifeBuoy, Mail, MessageSquare, PlusCircle, UserPlus, Users, ChevronRight, Share, MoreVertical, Bold, Italic, Underline } from "lucide-react"
 
+export type ComponentCategory =
+  | "Forms"
+  | "Overlay"
+  | "Data display"
+  | "Layout"
+  | "Feedback"
+  | "Navigation"
+
 export const registry: Record<string, {
   name: string;
   description: string;
+  category: ComponentCategory;
   component: React.ReactNode;
   code: string;
+  examples?: { title: string; component: React.ReactNode; code: string }[];
 }> = {
   button: {
     name: "Button",
     description: "Displays a button or a component that looks like a button.",
+    category: "Data display",
     component: (
       <div className="flex flex-wrap gap-4">
         <Button>Default Glow</Button>
@@ -71,10 +82,75 @@ export function ButtonDemo() {
   )
 }
 `,
+    examples: [
+      {
+        title: "Sizes",
+        component: (
+          <div className="flex flex-wrap items-center gap-4">
+            <Button size="sm">Small</Button>
+            <Button size="default">Default</Button>
+            <Button size="lg">Large</Button>
+            <Button size="icon">
+              <Share className="h-4 w-4" />
+            </Button>
+          </div>
+        ),
+        code: `import { Button } from "@/components/ui/button"
+import { Share } from "lucide-react"
+
+export function ButtonSizes() {
+  return (
+    <div className="flex items-center gap-4">
+      <Button size="sm">Small</Button>
+      <Button size="default">Default</Button>
+      <Button size="lg">Large</Button>
+      <Button size="icon">
+        <Share className="h-4 w-4" />
+      </Button>
+    </div>
+  )
+}
+`,
+      },
+      {
+        title: "With icon",
+        component: (
+          <div className="flex flex-wrap gap-4">
+            <Button>
+              <Mail className="mr-2 h-4 w-4" />
+              Login with Email
+            </Button>
+            <Button variant="outline">
+              <Github className="mr-2 h-4 w-4" />
+              View on GitHub
+            </Button>
+          </div>
+        ),
+        code: `import { Button } from "@/components/ui/button"
+import { Mail, Github } from "lucide-react"
+
+export function ButtonWithIcon() {
+  return (
+    <div className="flex gap-4">
+      <Button>
+        <Mail className="mr-2 h-4 w-4" />
+        Login with Email
+      </Button>
+      <Button variant="outline">
+        <Github className="mr-2 h-4 w-4" />
+        View on GitHub
+      </Button>
+    </div>
+  )
+}
+`,
+      },
+    ],
   },
   card: {
     name: "Card",
     description: "Displays a card with header, content, and footer.",
+    category: "Data display",
     component: (
       <Card className="w-[350px]">
         <CardHeader>
@@ -83,7 +159,7 @@ export function ButtonDemo() {
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-2">
-            <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+            <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
               <div className="h-full w-2/3 bg-primary shadow-[0_0_10px_rgba(34,211,238,0.5)]" />
             </div>
             <p className="text-xs text-muted-foreground">System integrity at 67%</p>
@@ -123,10 +199,66 @@ export function CardDemo() {
   )
 }
 `,
+    examples: [
+      {
+        title: "With form",
+        component: (
+          <Card className="w-[350px]">
+            <CardHeader>
+              <CardTitle>Create account</CardTitle>
+              <CardDescription>Enter your details below.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Name</Label>
+                <Input id="name" placeholder="Your name" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" type="email" placeholder="you@example.com" />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button className="w-full">Submit</Button>
+            </CardFooter>
+          </Card>
+        ),
+        code: `import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
+
+export function CardWithForm() {
+  return (
+    <Card className="w-[350px]">
+      <CardHeader>
+        <CardTitle>Create account</CardTitle>
+        <CardDescription>Enter your details below.</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="name">Name</Label>
+          <Input id="name" placeholder="Your name" />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <Input id="email" type="email" placeholder="you@example.com" />
+        </div>
+      </CardContent>
+      <CardFooter>
+        <Button className="w-full">Submit</Button>
+      </CardFooter>
+    </Card>
+  )
+}
+`,
+      },
+    ],
   },
   "dropdown-menu": {
     name: "Dropdown Menu",
     description: "Displays a menu to the user — such as a set of actions or functions — triggered by a button.",
+    category: "Navigation",
     component: (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -193,6 +325,7 @@ export function DropdownMenuDemo() {
   accordion: {
     name: "Accordion",
     description: "A vertically stacked set of interactive headings that each reveal an associated section of content.",
+    category: "Data display",
     component: (
       <Accordion type="single" collapsible className="w-[450px]">
         <AccordionItem value="item-1">
@@ -232,6 +365,7 @@ export function AccordionDemo() {
   },
   alert: {
     name: "Alert",
+    category: "Feedback",
     description: "Displays a callout for user attention.",
     component: (
       <div className="flex flex-col gap-4 w-[450px]">
@@ -274,6 +408,7 @@ export function AlertDemo() {
   "alert-dialog": {
     name: "Alert Dialog",
     description: "A modal dialog that interrupts the user with important content and expects a response.",
+    category: "Overlay",
     component: (
       <AlertDialog>
         <AlertDialogTrigger asChild>
@@ -332,6 +467,7 @@ export function AlertDialogDemo() {
   badge: {
     name: "Badge",
     description: "Displays a badge or a component that looks like a badge.",
+    category: "Data display",
     component: (
       <div className="flex gap-2">
         <Badge>Active</Badge>
@@ -359,6 +495,7 @@ export function BadgeDemo() {
   avatar: {
     name: "Avatar",
     description: "An image element with a fallback for representing the user.",
+    category: "Data display",
     component: (
       <div className="flex gap-4 items-center">
         <Avatar className="h-12 w-12">
@@ -393,6 +530,7 @@ export function AvatarDemo() {
   skeleton: {
     name: "Skeleton",
     description: "Use to show a placeholder while content is loading.",
+    category: "Feedback",
     component: (
       <div className="flex items-center space-x-4">
         <Skeleton className="h-12 w-12 rounded-full" />
@@ -420,6 +558,7 @@ export function SkeletonDemo() {
   checkbox: {
     name: "Checkbox",
     description: "A control that allows the user to toggle between checked and not checked.",
+    category: "Forms",
     component: (
       <div className="flex items-center space-x-2">
         <Checkbox id="terms" />
@@ -442,6 +581,7 @@ export function CheckboxDemo() {
   input: {
     name: "Input",
     description: "Displays a form input field or a component that looks like an input field.",
+    category: "Forms",
     component: (
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="email">Neural ID</Label>
@@ -460,9 +600,47 @@ export function InputDemo() {
   )
 }
 `,
+    examples: [
+      {
+        title: "Disabled",
+        component: (
+          <div className="flex w-full max-w-sm items-center gap-2">
+            <Input disabled placeholder="Disabled" />
+          </div>
+        ),
+        code: `import { Input } from "@/components/ui/input"
+
+export function InputDisabled() {
+  return <Input disabled placeholder="Disabled" />
+}
+`,
+      },
+      {
+        title: "With button",
+        component: (
+          <div className="flex w-full max-w-sm items-center gap-2">
+            <Input placeholder="Search..." />
+            <Button type="submit">Search</Button>
+          </div>
+        ),
+        code: `import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+
+export function InputWithButton() {
+  return (
+    <div className="flex w-full max-w-sm items-center gap-2">
+      <Input placeholder="Search..." />
+      <Button type="submit">Search</Button>
+    </div>
+  )
+}
+`,
+      },
+    ],
   },
   select: {
     name: "Select",
+    category: "Forms",
     description: "Displays a list of options for the user to pick from—triggered by a button.",
     component: (
       <Select>
@@ -504,6 +682,7 @@ export function SelectDemo() {
   },
   slider: {
     name: "Slider",
+    category: "Forms",
     description: "An input where the user selects a value from a given range.",
     component: (
       <div className="w-[300px]">
@@ -519,6 +698,7 @@ export function SliderDemo() {
   },
   switch: {
     name: "Switch",
+    category: "Forms",
     description: "A control that allows the user to toggle between checked and not checked.",
     component: (
       <div className="flex items-center space-x-2">
@@ -541,6 +721,7 @@ export function SwitchDemo() {
   },
   textarea: {
     name: "Textarea",
+    category: "Forms",
     description: "Displays a form textarea field or a component that looks like a textarea field.",
     component: (
       <div className="grid w-full gap-1.5">
@@ -563,6 +744,7 @@ export function TextareaDemo() {
   },
   "radio-group": {
     name: "Radio Group",
+    category: "Forms",
     description: "A set of checkable buttons—known as radio buttons—where no more than one button can be checked at a time.",
     component: (
       <RadioGroup defaultValue="option-one">
@@ -602,6 +784,7 @@ export function RadioGroupDemo() {
   breadcrumb: {
     name: "Breadcrumb",
     description: "Displays the path to the current resource using a hierarchy of links.",
+    category: "Navigation",
     component: (
       <Breadcrumb>
         <BreadcrumbList>
@@ -652,6 +835,7 @@ export function BreadcrumbDemo() {
   menubar: {
     name: "Menubar",
     description: "A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands.",
+    category: "Navigation",
     component: (
       <Menubar>
         <MenubarMenu>
@@ -710,6 +894,7 @@ export function MenubarDemo() {
   "navigation-menu": {
     name: "Navigation Menu",
     description: "A collection of links for navigating websites and apps.",
+    category: "Navigation",
     component: (
       <NavigationMenu>
         <NavigationMenuList>
@@ -751,6 +936,7 @@ export function NavigationMenuDemo() {
   pagination: {
     name: "Pagination",
     description: "Pagination with previous and next buttons.",
+    category: "Data display",
     component: (
       <Pagination>
         <PaginationContent>
@@ -804,6 +990,7 @@ export function PaginationDemo() {
   dialog: {
     name: "Dialog",
     description: "A window overlaid on either the primary window or another dialog window, rendering the content underneath inert.",
+    category: "Overlay",
     component: (
       <Dialog>
         <DialogTrigger asChild>
@@ -858,6 +1045,7 @@ export function DialogDemo() {
   popover: {
     name: "Popover",
     description: "Displays rich content in a portal, triggered by a button.",
+    category: "Overlay",
     component: (
       <Popover>
         <PopoverTrigger asChild>
@@ -899,6 +1087,7 @@ export function PopoverDemo() {
   progress: {
     name: "Progress",
     description: "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+    category: "Feedback",
     component: (
       <div className="w-[350px]">
         <Progress value={67} />
@@ -914,6 +1103,7 @@ export function ProgressDemo() {
   sheet: {
     name: "Sheet",
     description: "An extended version of a dialog component that is used to display content that is not as critical to the task flow, or to provide more options or data for the user.",
+    category: "Overlay",
     component: (
       <Sheet>
         <SheetTrigger asChild>
@@ -927,7 +1117,7 @@ export function ProgressDemo() {
             </SheetDescription>
           </SheetHeader>
           <div className="grid gap-4 py-4">
-            <div className="h-40 w-full bg-white/5 rounded-md border border-white/10 animate-pulse" />
+            <div className="h-40 w-full bg-muted rounded-md border border-border animate-pulse" />
           </div>
           <SheetFooter>
             <Button type="submit">Abort</Button>
@@ -971,6 +1161,7 @@ export function SheetDemo() {
   tooltip: {
     name: "Tooltip",
     description: "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    category: "Overlay",
     component: (
       <TooltipProvider>
         <Tooltip>
@@ -1012,6 +1203,7 @@ export function TooltipDemo() {
   "hover-card": {
     name: "Hover Card",
     description: "For sighted users to preview content available behind a link.",
+    category: "Overlay",
     component: (
       <HoverCard>
         <HoverCardTrigger asChild>
@@ -1056,9 +1248,10 @@ export function HoverCardDemo() {
   "context-menu": {
     name: "Context Menu",
     description: "Displays a menu to the user — such as a set of actions or functions — triggered by a right-click.",
+    category: "Overlay",
     component: (
       <ContextMenu>
-        <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed border-white/20 bg-black/40 text-sm backdrop-blur-sm">
+        <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed border-border bg-muted/50 text-sm">
           Right click for Node Controls
         </ContextMenuTrigger>
         <ContextMenuContent className="w-64">
@@ -1106,8 +1299,9 @@ export function ContextMenuDemo() {
   calendar: {
     name: "Calendar",
     description: "A date picker component that allows users to select a date from a calendar.",
+    category: "Data display",
     component: (
-      <div className="rounded-md border border-white/10 bg-black/40 backdrop-blur-md p-3">
+      <div className="rounded-md border border-border bg-muted/50 p-3">
         <Calendar mode="single" className="rounded-md border-0" />
       </div>
     ),
@@ -1131,6 +1325,7 @@ export function CalendarDemo() {
   table: {
     name: "Table",
     description: "A responsive table component.",
+    category: "Data display",
     component: (
       <Table>
         <TableCaption>A list of recent neural transactions.</TableCaption>
@@ -1190,8 +1385,9 @@ export function TableDemo() {
   command: {
     name: "Command",
     description: "A fast, composable, unstyled command menu for React.",
+    category: "Data display",
     component: (
-      <Command className="rounded-lg border border-white/10 shadow-md bg-black/40 backdrop-blur-md max-w-[450px]">
+      <Command className="rounded-lg border border-border shadow-md bg-popover max-w-[450px]">
         <CommandInput placeholder="Type a command or search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
@@ -1246,6 +1442,7 @@ export function CommandDemo() {
   "input-otp": {
     name: "Input OTP",
     description: "A specialized input for one-time passwords.",
+    category: "Forms",
     component: (
       <InputOTP maxLength={6}>
         <InputOTPGroup>
@@ -1290,10 +1487,11 @@ export function InputOTPDemo() {
   resizable: {
     name: "Resizable",
     description: "Accessible resizable panel groups and handles with keyboard support.",
+    category: "Layout",
     component: (
       <ResizablePanelGroup
         orientation="horizontal"
-        className="max-w-md rounded-lg border border-white/10 bg-black/40 backdrop-blur-md"
+        className="max-w-md rounded-lg border border-border bg-muted/50"
       >
         <ResizablePanel defaultSize={50}>
           <div className="flex h-[200px] items-center justify-center p-6">
@@ -1339,6 +1537,7 @@ export function ResizableDemo() {
   toggle: {
     name: "Toggle",
     description: "A two-state button that can be either on or off.",
+    category: "Data display",
     component: (
       <Toggle aria-label="Toggle bold">
         <Bold className="h-4 w-4" />
@@ -1359,6 +1558,7 @@ export function ToggleDemo() {
   "toggle-group": {
     name: "Toggle Group",
     description: "A set of two-state buttons that can be toggled on or off.",
+    category: "Data display",
     component: (
       <ToggleGroup type="multiple">
         <ToggleGroupItem value="bold" aria-label="Toggle bold">

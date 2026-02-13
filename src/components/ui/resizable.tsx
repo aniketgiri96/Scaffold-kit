@@ -29,13 +29,13 @@ const ResizableHandle = ({
 }) => (
     <Separator
         className={cn(
-            "relative flex w-px items-center justify-center bg-white/10 transition-all hover:bg-primary/50 data-[panel-group-orientation=vertical]:h-px data-[panel-group-orientation=vertical]:w-full data-[panel-group-orientation=vertical]:after:left-0 data-[panel-group-orientation=vertical]:after:h-1 data-[panel-group-orientation=vertical]:after:w-full data-[panel-group-orientation=vertical]:after:-translate-y-1/2 data-[panel-group-orientation=vertical]:after:translate-x-0 data-[panel-group-orientation=vertical]:[&[data-panel-group-orientation=vertical]>div]:rotate-90",
+            "relative flex w-px items-center justify-center bg-border transition-all hover:bg-primary/50 data-[panel-group-orientation=vertical]:h-px data-[panel-group-orientation=vertical]:w-full data-[panel-group-orientation=vertical]:after:left-0 data-[panel-group-orientation=vertical]:after:h-1 data-[panel-group-orientation=vertical]:after:w-full data-[panel-group-orientation=vertical]:after:-translate-y-1/2 data-[panel-group-orientation=vertical]:after:translate-x-0 data-[panel-group-orientation=vertical]:[&[data-panel-group-orientation=vertical]>div]:rotate-90",
             className
         )}
         {...props}
     >
         {withHandle && (
-            <div className="z-10 flex h-4 w-3 items-center justify-center rounded-sm border border-white/20 bg-black/80 backdrop-blur-sm">
+            <div className="z-10 flex h-4 w-3 items-center justify-center rounded-sm border border-border bg-muted">
                 <GripVertical className="h-2.5 w-2.5 text-primary" />
             </div>
         )}

@@ -51,7 +51,7 @@ export function ComponentPreview({
                         </TabsTrigger>
                     </TabsList>
                 </div>
-                <TabsContent value="preview" className="relative rounded-md border border-white/10 bg-black/20 backdrop-blur-xl overflow-hidden">
+                <TabsContent value="preview" className="relative rounded-md border border-border bg-muted/50 backdrop-blur-xl overflow-hidden">
                     <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
                     <div
                         className={cn(
@@ -68,7 +68,7 @@ export function ComponentPreview({
                 </TabsContent>
                 <TabsContent value="code">
                     <div className="flex flex-col space-y-4">
-                        <div className="relative w-full rounded-md border border-white/10 bg-black/40 backdrop-blur-xl [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto">
+                        <div className="relative w-full rounded-md border border-border bg-muted [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto">
                             <Button
                                 size="icon"
                                 variant="ghost"
@@ -85,10 +85,10 @@ export function ComponentPreview({
                                 )}
                                 <span className="sr-only">Copy</span>
                             </Button>
-                            <pre className="p-6 bg-black/60 rounded-md overflow-x-auto text-sm text-cyan-400 font-mono leading-relaxed selection:bg-cyan-500/30">
+                            <pre className="p-6 bg-muted/80 rounded-md overflow-x-auto text-sm text-foreground font-mono leading-relaxed selection:bg-primary/20 selection:text-foreground">
                                 <code className="block">{code}</code>
                             </pre>
-                            <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
+                            <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
                         </div>
                     </div>
                 </TabsContent>
