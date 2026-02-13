@@ -24,7 +24,7 @@ export function Sidebar({ componentItemsByCategory = {}, categoryOrder = [] }: S
     })
 
     return (
-        <aside className="fixed top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:sticky md:block border-r border-border bg-muted/30 backdrop-blur-lg">
+        <aside className="fixed top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:sticky md:block glass-strong border-l-0 border-t-0 border-b-0 border-r border-border">
             <div className="h-full overflow-y-auto py-6 pr-6 lg:py-12 pl-8">
                 {sidebarNav.map((item, index) => (
                     <div key={index} className="pb-4">
