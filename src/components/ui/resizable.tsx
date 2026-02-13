@@ -1,0 +1,45 @@
+"use client"
+
+import { GripVertical } from "lucide-react"
+import { Group, Panel, Separator } from "react-resizable-panels"
+
+import { cn } from "@/lib/utils"
+
+const ResizablePanelGroup = ({
+    className,
+    ...props
+}: React.ComponentProps<typeof Group>) => (
+    <Group
+        className={cn(
+            "flex h-full w-full data-[panel-group-orientation=vertical]:flex-col",
+            className
+        )}
+        {...props}
+    />
+)
+
+const ResizablePanel = Panel
+
+const ResizableHandle = ({
+    withHandle,
+    className,
+    ...props
+}: React.ComponentProps<typeof Separator> & {
+    withHandle?: boolean
+}) => (
+    <Separator
+        className={cn(
+            "relative flex w-px items-center justify-center bg-white/10 transition-all hover:bg-primary/50 data-[panel-group-orientation=vertical]:h-px data-[panel-group-orientation=vertical]:w-full data-[panel-group-orientation=vertical]:after:left-0 data-[panel-group-orientation=vertical]:after:h-1 data-[panel-group-orientation=vertical]:after:w-full data-[panel-group-orientation=vertical]:after:-translate-y-1/2 data-[panel-group-orientation=vertical]:after:translate-x-0 data-[panel-group-orientation=vertical]:[&[data-panel-group-orientation=vertical]>div]:rotate-90",
+            className
+        )}
+        {...props}
+    >
+        {withHandle && (
+            <div className="z-10 flex h-4 w-3 items-center justify-center rounded-sm border border-white/20 bg-black/80 backdrop-blur-sm">
+                <GripVertical className="h-2.5 w-2.5 text-primary" />
+            </div>
+        )}
+    </Separator>
+)
+
+export { ResizablePanelGroup, ResizablePanel, ResizableHandle }
