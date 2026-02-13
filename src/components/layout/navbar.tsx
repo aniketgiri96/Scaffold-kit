@@ -15,7 +15,7 @@ export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/80">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/80 [box-shadow:0_1px_0_0_var(--border),0_0_12px_-4px_var(--glow-primary)]">
       <div className="container mx-auto px-4 flex h-14 max-w-screen-2xl items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
@@ -31,7 +31,7 @@ export function Navbar() {
                 >
                   {label}
                 </motion.span>
-                {pathname === href || (href !== "/" && pathname.startsWith(href)) ? (
+                {pathname === href || pathname.startsWith(href + "/") ? (
                   <motion.span
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full"
                     layoutId="nav-underline"

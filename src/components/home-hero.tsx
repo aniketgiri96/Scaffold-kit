@@ -18,7 +18,7 @@ const item = {
   animate: {
     opacity: 1,
     y: 0,
-    transition: { type: "spring", stiffness: 300, damping: 30 },
+    transition: { type: "spring" as const, stiffness: 300, damping: 30 },
   },
 };
 
@@ -37,7 +37,7 @@ export function HomeHero() {
               variants={item}
               className="font-display font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70"
             >
-              Future-Proof Your <span className="text-primary italic">Design System</span>
+              Future-Proof Your <span className="text-gradient-accent italic">Design System</span>
             </motion.h1>
             <motion.p
               variants={item}
@@ -51,7 +51,7 @@ export function HomeHero() {
             <motion.div variants={item} className="space-x-4 pt-4 flex flex-wrap justify-center gap-4">
               <Button
                 size="lg"
-                className="h-12 px-8 rounded-full shadow-[0_0_20px_rgba(var(--primary),0.5)] transition-transform hover:scale-105 active:scale-95"
+                className="h-12 px-8 rounded-full shadow-[0_0_20px_var(--glow-primary)] ring-2 ring-primary/30 ring-offset-2 ring-offset-background transition-transform hover:scale-105 hover:shadow-[0_0_28px_var(--glow-primary)] active:scale-95"
                 asChild
               >
                 <Link href="/components">Explore Components</Link>
