@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import {
@@ -51,9 +51,24 @@ function NavLinks({ onLinkClick }: { onLinkClick?: () => void }) {
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background backdrop-blur-sm">
+    <header
+      className={cn(
+        "sticky top-0 z-50 w-full border-b transition-colors duration-200 rounded-b-xl",
+        scrolled
+          ? "border-border bg-background/95 backdrop-blur-sm"
+          : "border-transparent bg-transparent"
+      )}
+    >
       <div className="container mx-auto flex h-14 max-w-screen-2xl items-center justify-between px-4">
         <Link
           href="/"

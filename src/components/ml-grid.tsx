@@ -47,12 +47,12 @@ function MLCard({
       animate="animate"
       variants={cardVariants}
     >
-      <Link href={`/ml/${slug}`}>
+      <Link href={`/ml/${slug}`} className="block cursor-pointer">
         <motion.div
           whileHover={{ y: -4, transition: { duration: 0.2 } }}
           className="h-full"
         >
-          <Card className="group relative overflow-hidden transition-all hover:bg-accent/50 hover:border-primary/30 hover:shadow-[0_0_20px var(--glow-primary)] h-full">
+          <Card className="group relative overflow-hidden transition-all hover:bg-accent/50 hover:border-primary/30 hover:shadow-[0_0_20px var(--glow-primary)] h-full cursor-pointer">
             <CardHeader className="relative z-10 p-6">
               <div className="mb-1 flex flex-wrap items-center gap-2">
                 <CardTitle className="text-lg font-semibold tracking-tight text-foreground transition-colors group-hover:text-primary">
@@ -79,10 +79,10 @@ function MLCard({
 export function MLGrid({ byCategory }: MLGridProps) {
   let globalIndex = 0;
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {byCategory.map(({ category, entries }) => (
         <section key={category}>
-          <h2 className="font-display mb-4 text-xl font-semibold tracking-tight">
+          <h2 className="font-display mb-4 text-2xl font-semibold tracking-tight text-foreground border-b border-border pb-2 cursor-default select-none">
             {category}
           </h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
