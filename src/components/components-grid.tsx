@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { slugifyCategory } from "@/lib/utils";
 
 export type ComponentCategory = string;
 
@@ -30,7 +31,7 @@ export function ComponentsGrid({ byCategory }: ComponentsGridProps) {
   return (
     <div className="space-y-8">
       {byCategory.map(({ category, entries }) => (
-        <section key={category}>
+        <section key={category} id={slugifyCategory(category)}>
           <h2 className="font-display mb-4 text-xl font-semibold tracking-tight">{category}</h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {entries.map(({ slug, name, description }) => {

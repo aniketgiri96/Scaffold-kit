@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { slugifyCategory } from "@/lib/utils";
 import type { MLTemplateType, MLCategory } from "@/registry/ml-registry";
 
 export interface MLEntry {
@@ -81,7 +82,7 @@ export function MLGrid({ byCategory }: MLGridProps) {
   return (
     <div className="space-y-10">
       {byCategory.map(({ category, entries }) => (
-        <section key={category}>
+        <section key={category} id={slugifyCategory(category)}>
           <h2 className="font-display mb-4 text-2xl font-semibold tracking-tight text-foreground border-b border-border pb-2 cursor-default select-none">
             {category}
           </h2>
