@@ -1,9 +1,20 @@
 {
-  "name": "scaffold",
-  "version": "0.5.1",
-  "private": true,
+  "name": "aniketgiri96-scaffold-kit",
+  "version": "0.6.0",
+  "private": false,
   "bin": {
-    "scaffold": "./cli.js"
+    "scaffold": "cli.js"
+  },
+  "files": [
+    "cli.js",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aniketgiri96/Scaffold-kit.git"
   },
   "scripts": {
     "dev": "next dev",

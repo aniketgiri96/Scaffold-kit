@@ -5,7 +5,8 @@ export async function GET(
   _request: Request,
   { params }: { params: Promise<{ name: string }> }
 ) {
-  const { name } = await params;
+  const { name: rawName } = await params;
+  const name = rawName.replace(/\.json$/i, "");
   const entry = mlRegistry[name];
 
   if (!entry) {
