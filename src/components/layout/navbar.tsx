@@ -53,7 +53,7 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background backdrop-blur-sm">
       <div className="container mx-auto flex h-14 max-w-screen-2xl items-center justify-between px-4">
         <Link
           href="/"

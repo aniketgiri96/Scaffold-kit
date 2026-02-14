@@ -2,9 +2,9 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="w-full overflow-hidden">
+    <footer className="w-full overflow-hidden mt-10">
       <div className="relative container mx-auto px-4 max-w-screen-2xl py-12 md:py-16">
-        {/* Background brand text (antigravity style) - straight alignment */}
+        {/* Background brand text - straight alignment */}
         <span
           aria-hidden
           className="pointer-events-none absolute inset-0 flex select-none items-center justify-center font-display font-bold tracking-tighter text-foreground/[0.06] text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[10rem] xl:text-[12rem]"
