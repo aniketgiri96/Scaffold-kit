@@ -13,13 +13,33 @@ export async function GET(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
+  /** UI components from shadcn registry; CLI installs these first so @/components/ui/* imports resolve. */
+  const registryDependencies = [
+    "avatar",
+    "button",
+    "card",
+    "input",
+    "textarea",
+    "badge",
+    "scroll-area",
+    "sheet",
+    "collapsible",
+    "alert",
+    "skeleton",
+    "select",
+  ];
+
+  /** npm packages used in templates (lucide-react); CLI runs package-manager install. */
+  const dependencies = ["lucide-react"];
+
   const registryItem = {
     $schema: "https://ui.shadcn.com/schema/registry-item.json",
     name: entry.slug,
     type: "registry:block" as const,
     title: entry.name,
     description: entry.description,
-    registryDependencies: [],
+    registryDependencies,
+    dependencies,
     files: [
       {
         path: `templates/${entry.slug}.tsx`,

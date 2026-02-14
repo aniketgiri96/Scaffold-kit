@@ -72,7 +72,7 @@ export const mlRegistry: Record<string, MLTemplateEntry> = {
     code: `import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts"
-import { CHART_STROKE } from "@/features/ml/shared/chart-theme"
+import { CHART_STROKE } from "./shared/chart-theme"
 
 export function MLModelPerformanceDashboard() {
   const data = [/* your metrics */]
@@ -126,7 +126,7 @@ export function ResourceUsageDashboard() {
     category: "Charts",
     component: <TrainingLossAccuracyCurves />,
     code: `import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts"
-import { CHART_STROKE } from "@/features/ml/shared/chart-theme"
+import { CHART_STROKE } from "./shared/chart-theme"
 
 export function TrainingLossAccuracyCurves({ data }) {
   return (
@@ -174,7 +174,7 @@ export function ConfusionMatrixHeatmap({ matrix, labels }) {
     category: "Charts",
     component: <RocAucCurve />,
     code: `import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts"
-import { CHART_STROKE } from "@/features/ml/shared/chart-theme"
+import { CHART_STROKE } from "./shared/chart-theme"
 
 export function RocAucCurve({ data, auc }) {
   return (
