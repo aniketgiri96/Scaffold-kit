@@ -34,7 +34,11 @@ export default async function TemplatePage({ params }: PageProps) {
         <h1 className="font-display text-3xl font-bold tracking-tight">{template.name}</h1>
         <p className="text-lg text-muted-foreground">{template.description}</p>
       </div>
-      <ComponentPreview name={template.name} code={template.code}>
+      <ComponentPreview
+        name={template.name}
+        code={template.code}
+        cliInstallCommand={`pnpm ui:add @templates/${slug}`}
+      >
         {template.component}
       </ComponentPreview>
       {template.examples?.map((example) => (

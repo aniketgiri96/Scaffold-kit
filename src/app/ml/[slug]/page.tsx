@@ -39,7 +39,11 @@ export default async function MLSlugPage({ params }: PageProps) {
         </h1>
         <p className="text-lg text-muted-foreground">{entry.description}</p>
       </div>
-      <ComponentPreview name={entry.name} code={entry.code}>
+      <ComponentPreview
+        name={entry.name}
+        code={entry.code}
+        cliInstallCommand={`pnpm ui:add @ml/${slug}`}
+      >
         {entry.component}
       </ComponentPreview>
       {entry.examples?.map((example) => (

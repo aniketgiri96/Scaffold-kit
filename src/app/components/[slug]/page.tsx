@@ -34,7 +34,7 @@ export default async function ComponentPage({ params }: PageProps) {
         <h1 className="font-display text-3xl font-bold tracking-tight">{component.name}</h1>
         <p className="text-lg text-muted-foreground">{component.description}</p>
       </div>
-      <ComponentPreview name={component.name} code={component.code}>
+      <ComponentPreview name={component.name} code={component.code} cliSlug={slug}>
         {component.component}
       </ComponentPreview>
       {component.examples?.map((example) => (
