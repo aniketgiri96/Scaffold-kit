@@ -13,7 +13,66 @@ A **one-stop UI kit for AI developers**: copy-paste components and AI patterns (
 2. Open **Components** or **Templates**, pick an item, switch to the **Code** tab, and copy the snippet into your project.
 3. Use the import path `@/components/ui/<name>` for components (e.g. `@/components/ui/button`). Ensure your project’s path alias `@/` points to your `src` (or adjust the copied imports).
 
+## Use in your repo
+
+To add components, templates, or ML blocks **from your own app repo** (without cloning this platform), run the CLI from your project root. No need to edit `components.json` manually—the CLI will create or update it with the required registries, then install the component.
+
+### Recommended: one command (auto-config + install)
+
+From your project root, run (no manual setup required):
+
+```bash
+npx scaffold add @ml/ml-model-performance-dashboard
+```
+
+Other examples:
+
+- **ML blocks:** `npx scaffold add @ml/<slug>` (e.g. `@ml/ml-model-performance-dashboard`)
+- **Templates:** `npx scaffold add @templates/<slug>` (e.g. `@templates/chat-message-row`)
+- **Shadcn primitives:** `npx scaffold add button` (etc.)
+
+The CLI ensures `components.json` exists and contains the `@ml` and `@templates` registries, then runs the add. If this package is not published to npm, use: `npx github:owner/design-system-platform add @ml/...` (replace `owner` with the repo owner; the binary runs as `scaffold`). To point at a local design system instance, set `DSP_REGISTRY_BASE=http://localhost:3000/api/registry` before running.
+
+### Alternative: manual one-time setup
+
+If you prefer to add the script and registries yourself (or use `pnpm ui:add` / `npm run ui:add`), do the following once in your project.
+
+1. **Add the CLI script** to your `package.json`:
+   ```json
+   "scripts": {
+     "ui:add": "shadcn@latest add"
+   }
+   ```
+
+2. **Configure registries** so the CLI can resolve `@ml/` and `@templates/`:
+   - **If you don't have a `components.json`:** Create one at your project root. You can copy [components.consumer.json](components.consumer.json) from this repo, or use a minimal config that includes the `$schema`, `registries`, and `aliases` (see that file for the full block).
+   - **If you already have `components.json`** (e.g. from shadcn): Add this `registries` block (merge with any existing `registries`):
+     ```json
+     "registries": {
+       "@templates": "https://scaffold-kit-zeta.vercel.app/api/registry/templates/{name}.json",
+       "@ml": "https://scaffold-kit-zeta.vercel.app/api/registry/ml/{name}.json"
+     }
+     ```
+
+3. **Optional:** For a local design system instance, point registries to `http://localhost:3000/api/registry/...` instead of the Vercel URL above.
+
+**Don't have a `components/ui` folder?** You don't need to create it. The shadcn CLI creates the target directory when you add your first component. Ensure your `components.json` includes the same `aliases` (e.g. `"ui": "@/components/ui"`) so the CLI knows where to write; see [components.consumer.json](components.consumer.json) for a full example. If your app uses a different structure (e.g. no `src/`, or components elsewhere), set `aliases.ui` and related keys to match—the CLI will still create missing directories on first add.
+
+### Adding components (after setup)
+
+From your project root:
+
+- **ML blocks:** `pnpm ui:add @ml/<slug>` or `npm run ui:add @ml/<slug>` (e.g. `@ml/ml-model-performance-dashboard`)
+- **Templates:** `pnpm ui:add @templates/<slug>` or `npm run ui:add @templates/<slug>` (e.g. `@templates/chat-message-row`)
+- **Shadcn primitives:** `pnpm ui:add button` or `npm run ui:add button` (etc.)
+
+**Without adding the script:** You can run `npx shadcn@latest add @ml/ml-model-performance-dashboard` (and other commands) as long as your `components.json` has the registries above.
+
+**"Command ui:add not found"?** With **npm** you must use `npm run ui:add` (not `npm ui:add`). With pnpm/yarn you can use `pnpm ui:add` or `yarn ui:add`. If the script is still not found, you're likely in a project that hasn't had the one-time setup—add the `ui:add` script to that project's `package.json` (step 1 above).
+
 ## Installing UI components (shadcn CLI)
+
+To add components from **your own repo**, do the one-time setup in [Use in your repo](#use-in-your-repo), then run the commands below.
 
 You can add shadcn/ui components directly from the CLI. New components are written to `src/components/ui/` and use the existing `@/lib/utils` and theme.
 
@@ -24,7 +83,7 @@ You can add shadcn/ui components directly from the CLI. New components are writt
 
 Existing components in `src/components/ui/` (e.g. button, card) include custom styling (glow, backdrop-blur). Adding the same component **without** `--overwrite` skips the file; **with** `--overwrite` replaces it and removes those customizations. Prefer using the CLI for components you don't have yet; for existing ones, avoid overwriting or re-apply customizations after a one-time overwrite.
 
-**Templates and ML blocks** can also be installed via the CLI using the project's custom registries (run the app locally first so the registry URLs in `components.json` can be reached, or point them to your deployed app URL):
+**Templates and ML blocks** can also be installed via the CLI using the project's custom registries. **First-time use from your own repo** requires the one-time setup in [Use in your repo](#use-in-your-repo) (script + registries in your project). Run the app locally if you point registries to localhost, or use the deployed app URL.
 
 - **Templates:** `pnpm ui:add @templates/<slug>` (e.g. `pnpm ui:add @templates/chat-message-row`)
 - **ML:** `pnpm ui:add @ml/<slug>` (e.g. `pnpm ui:add @ml/ml-model-performance-dashboard`)

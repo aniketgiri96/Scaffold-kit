@@ -42,7 +42,7 @@ export default async function MLSlugPage({ params }: PageProps) {
       <ComponentPreview
         name={entry.name}
         code={entry.code}
-        cliInstallCommand={`pnpm ui:add @ml/${slug}`}
+        cliInstallCommand={`npx scaffold add @ml/${slug}`}
       >
         {entry.component}
       </ComponentPreview>
