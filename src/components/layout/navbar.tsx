@@ -19,7 +19,6 @@ const navLinks = [
   { href: "/docs", label: "Docs" },
   { href: "/components", label: "Components" },
   { href: "/templates", label: "Templates" },
-  { href: "/examples", label: "Examples" },
 ] as const;
 
 function NavLinks({ onLinkClick }: { onLinkClick?: () => void }) {

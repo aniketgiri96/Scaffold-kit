@@ -7,6 +7,10 @@ export const docsConfig = {
                     title: "Introduction",
                     href: "/docs",
                 },
+                {
+                    title: "For AI developers",
+                    href: "/docs/for-ai-developers",
+                },
             ],
         },
         {

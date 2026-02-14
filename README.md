@@ -1,36 +1,27 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Design System Platform
 
-## Getting Started
+A **one-stop UI kit for AI developers**: copy-paste components and AI patterns (chat UIs, prompts, agents) with consistent imports. Built with Radix UI and Tailwind CSS. Works with Cursor and Copilot.
 
-First, run the development server:
+## What’s in the kit
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Components** — Primitives (buttons, inputs, dialogs, forms, etc.). Browse and copy from the Code tab on each component page.
+- **Templates** — AI-oriented blocks and full-page layouts: chat message row, prompt input bar, AI response card, typing indicator, tool-call display, suggested prompts, full chat playground, and more.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Quick start
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Run the app: `npm run dev` (or `pnpm dev` / `yarn dev` / `bun dev`) and open [http://localhost:3000](http://localhost:3000).
+2. Open **Components** or **Templates**, pick an item, switch to the **Code** tab, and copy the snippet into your project.
+3. Use the import path `@/components/ui/<name>` for components (e.g. `@/components/ui/button`). Ensure your project’s path alias `@/` points to your `src` (or adjust the copied imports).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Using with Cursor / Copilot
 
-## Learn More
+Open a component or template page on this site, switch to the **Code** tab, and copy the code. You can also use the manifest API: `GET /api/manifest` returns a JSON catalog of all components and templates for AI tools.
 
-To learn more about Next.js, take a look at the following resources:
+## Docs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Introduction** — [/docs](/docs)
+- **For AI developers** — [/docs/for-ai-developers](/docs/for-ai-developers)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Tech stack
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js, React, Radix UI, Tailwind CSS, Framer Motion.

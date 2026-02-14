@@ -5,6 +5,15 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2025-02-14
+
+### Minor change
+
+- Repositioned as one-stop UI kit for AI developers. Updated home hero and README with AI-developer messaging and copy-paste + Cursor/Copilot workflow.
+- **Docs:** Added `/docs` (Introduction) and `/docs/for-ai-developers` (usage with Cursor/Copilot and manifest API). Updated docs config sidebar.
+- **Manifest API:** Added `GET /api/manifest` returning a JSON catalog of all components and templates (slug, name, description, category/type, importPath where applicable, code, and optional examples) for use by AI tools.
+- **Home:** Added “AI patterns” section below the hero with a grid of 6 template cards linking to Templates; secondary CTA now points to Templates (“AI patterns”). Removed Examples from nav and footer (rely on Components + Templates + Docs).
+
 ## [0.2.0] - 2025-02-13
 
 ### UI change

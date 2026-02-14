@@ -4,7 +4,6 @@ const footerLinks = [
   { href: "/docs", label: "Docs" },
   { href: "/components", label: "Components" },
   { href: "/templates", label: "Templates" },
-  { href: "/examples", label: "Examples" },
 ] as const;
 
 export function Footer() {

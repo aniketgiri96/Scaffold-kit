@@ -37,16 +37,16 @@ export function HomeHero() {
               variants={item}
               className="font-display font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70"
             >
-              Future-Proof Your <span className="text-gradient-accent italic">Design System</span>
+              One-Stop UI Kit for <span className="text-gradient-accent italic">AI Developers</span>
             </motion.h1>
             <motion.p
               variants={item}
               className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8"
             >
-              A premium, high-performance UI library with
-              <span className="text-primary/80 font-semibold"> glassmorphism</span>,
-              <span className="text-primary/80 font-semibold font-mono"> neon glows</span>,
-              and state-of-the-art aesthetics.
+              Copy-paste components and AI patterns (chat, prompts, agents). Works with
+              <span className="text-primary/80 font-semibold"> Cursor</span> and
+              <span className="text-primary/80 font-semibold"> Copilot</span>, with
+              consistent <code className="rounded bg-muted/80 px-1.5 py-0.5 font-mono text-sm">@/components/ui</code> imports.
             </motion.p>
             <motion.div variants={item} className="space-x-4 pt-4 flex flex-wrap justify-center gap-4">
               <Button
@@ -62,9 +62,7 @@ export function HomeHero() {
                 className="h-12 px-8 rounded-full border-border bg-muted/50 backdrop-blur-md hover:bg-muted transition-transform hover:scale-105 active:scale-95"
                 asChild
               >
-                <Link href="https://github.com" target="_blank">
-                  View GitHub
-                </Link>
+                <Link href="/templates">AI patterns</Link>
               </Button>
             </motion.div>
           </motion.div>
