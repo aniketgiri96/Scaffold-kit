@@ -11,6 +11,10 @@ export const docsConfig = {
                     title: "For AI developers",
                     href: "/docs/for-ai-developers",
                 },
+                {
+                    title: "Design tokens",
+                    href: "/docs/design-tokens",
+                },
             ],
         },
         {

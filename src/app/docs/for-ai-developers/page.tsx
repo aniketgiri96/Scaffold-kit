@@ -11,6 +11,10 @@ export default function ForAiDevelopersPage() {
           Use this UI kit with Cursor, Copilot, or any AI coding assistant:
           discover components and templates, then copy production-ready code.
         </p>
+        <p className="mt-2 text-muted-foreground">
+          <strong className="text-foreground">Zero dependency.</strong> Copy code into your repo—no
+          design-system package to install or upgrade. You own the code.
+        </p>
       </div>
 
       <section className="space-y-4">
@@ -53,11 +57,14 @@ export default function ForAiDevelopersPage() {
           <li>
             <strong className="text-foreground">components</strong> — slug, name,
             description, category, importPath, code, and optional examples (title
-            + code).
+            + code). When present: props, dependencies, whenToUse, alternatives.
           </li>
           <li>
             <strong className="text-foreground">templates</strong> — slug, name,
-            description, type (block or page), code, and optional examples.
+            description, type (block or page), code, optional examples, and when present patternCategory (e.g. Streaming, Tool use).
+          </li>
+          <li>
+            <strong className="text-foreground">recipes</strong> — slug, name, description, blockSlugs (ordered), layoutHint. Use for full-screen flows; <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">GET /api/recipes/&lt;slug&gt;</code> returns blocks with code for each.
           </li>
         </ul>
         <p className="text-muted-foreground">
@@ -65,6 +72,40 @@ export default function ForAiDevelopersPage() {
           <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">https://yoursite.com/api/manifest</code>)
           to let an AI assistant list and suggest components and templates with
           correct copy-paste snippets.
+        </p>
+        <p className="text-muted-foreground">
+          Optional: <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">?version=0.3.0</code> or{" "}
+          <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">Accept: application/vnd.design-system.v1+json</code> for versioned responses.
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold tracking-tight">
+          Context and Cursor rule
+        </h2>
+        <p className="text-muted-foreground">
+          A curated context block tells an AI assistant which components and templates to use and when.
+          <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm ml-1">GET /api/context</code> returns{" "}
+          <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">{"{ markdown, cursorRule }"}</code>.
+          Use <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">?format=markdown</code> for plain markdown.
+        </p>
+        <p className="text-muted-foreground">
+          For Cursor: add a project rule (e.g. in <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">.cursor/rules</code>) or paste the <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">cursorRule</code> from the response so the assistant uses this design system when building UI.
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold tracking-tight">
+          Design tokens (copy-paste)
+        </h2>
+        <p className="text-muted-foreground">
+          Paste design tokens (CSS variables for colors, radius, glass) so copied components look consistent.
+          Fetch <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">GET /api/tokens</code> for a
+          ready-to-paste CSS snippet, or see{" "}
+          <Link href="/docs/design-tokens" className="text-primary underline hover:no-underline">
+            Design tokens
+          </Link>{" "}
+          for the full snippet and usage.
         </p>
       </section>
     </div>

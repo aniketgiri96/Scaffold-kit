@@ -5,6 +5,17 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-02-14
+
+### Minor change
+
+- **Manifest API (richer):** Components and templates now expose optional `props`, `dependencies`, `whenToUse`, and `alternatives` for AI reasoning. Templates include `patternCategory` (e.g. Streaming, Tool use, Chat). Versioned manifest: `?version=0.3.0` or `Accept: application/vnd.design-system.v1+json`; response includes `X-Design-System-Version`.
+- **Recipes:** New registry and manifest section for pattern combos (e.g. chat-screen = chat-layout + chat-message-row + typing-indicator + prompt-input-bar + message-error-retry). Templates page shows a Recipes section and links to `/recipes/[slug]`. `GET /api/recipes` and `GET /api/recipes/[slug]` return recipe metadata and per-block code for full-screen assembly.
+- **AI patterns in nav:** Templates are grouped by AI pattern category (Chat, Prompt input, Streaming, Tool use, Errors & retry, Layout) on the Templates page with pattern badges.
+- **Design tokens:** `GET /api/tokens` returns copy-paste CSS variables (and `.glass` utility). New doc page `/docs/design-tokens` with snippet and usage; linked from For AI developers.
+- **Zero-dependency messaging:** README and For AI developers doc now state clearly that copy-paste means no design-system package—you own the code.
+- **Context and Cursor rule:** `GET /api/context` returns curated markdown context and a `cursorRule` snippet for Cursor/Copilot. Documented in For AI developers.
+
 ## [0.3.0] - 2025-02-14
 
 ### Minor change

@@ -91,8 +91,8 @@
   --radius: 0.75rem;
 
   /* Glass & futuristic */
-  --glow-primary: hsla(210, 100%, 50%, 0.5);
-  --glow-destructive: hsl(0 84% 60% / 0.2);
+  --glow-primary: hsla(210, 100%, 50%, 0.22);
+  --glow-destructive: hsl(0 84% 60% / 0.12);
   --shadow-default: 0 4px 12px hsl(230 50% 10% / 0.08);
   --glass-background: rgba(255, 255, 255, 0.7);
   --glass-bg: hsl(230 25% 100% / 0.65);
@@ -125,8 +125,8 @@
   --ring: hsl(190 100% 50%);
 
   /* Glass & futuristic */
-  --glow-primary: hsla(190, 100%, 50%, 0.4);
-  --glow-destructive: hsl(0 84% 60% / 0.2);
+  --glow-primary: hsla(190, 100%, 50%, 0.2);
+  --glow-destructive: hsl(0 84% 60% / 0.12);
   --shadow-default: 0 4px 12px hsl(210 20% 98% / 0.08);
   --glass-background: rgba(10, 12, 18, 0.6);
   --glass-bg: hsl(230 40% 6% / 0.65);

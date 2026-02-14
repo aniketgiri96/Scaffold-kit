@@ -15,7 +15,7 @@ A **one-stop UI kit for AI developers**: copy-paste components and AI patterns (
 
 ## Using with Cursor / Copilot
 
-Open a component or template page on this site, switch to the **Code** tab, and copy the code. You can also use the manifest API: `GET /api/manifest` returns a JSON catalog of all components and templates for AI tools.
+Open a component or template page on this site, switch to the **Code** tab, and copy the code. You can also use the manifest API: `GET /api/manifest` returns a JSON catalog of all components and templates for AI tools. Copy-paste only—no runtime dependency on this platform.
 
 ## Docs
 

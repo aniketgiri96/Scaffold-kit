@@ -13,8 +13,15 @@ export interface TemplateEntry {
   type: TemplateType;
 }
 
+interface ByPatternSection {
+  patternCategory: string;
+  type: TemplateType;
+  entries: TemplateEntry[];
+}
+
 interface TemplatesGridProps {
   byType: { type: TemplateType; entries: TemplateEntry[] }[];
+  byPattern?: ByPatternSection[];
 }
 
 const typeLabels: Record<TemplateType, string> = {
@@ -31,8 +38,80 @@ const cardVariants = {
   }),
 };
 
-export function TemplatesGrid({ byType }: TemplatesGridProps) {
+function TemplateCard({
+  slug,
+  name,
+  description,
+  type,
+  patternCategory,
+  index,
+}: TemplateEntry & { patternCategory?: string; index: number }) {
+  return (
+    <motion.div
+      custom={index}
+      initial="initial"
+      animate="animate"
+      variants={cardVariants}
+    >
+      <Link href={`/templates/${slug}`}>
+        <motion.div
+          whileHover={{ y: -4, transition: { duration: 0.2 } }}
+          className="h-full"
+        >
+          <Card className="group relative overflow-hidden transition-all hover:bg-accent/50 hover:border-primary/30 hover:shadow-[0_0_20px var(--glow-primary)] h-full">
+            <CardHeader className="relative z-10 p-6">
+              <div className="flex items-center gap-2 mb-1 flex-wrap">
+                <CardTitle className="text-lg font-semibold group-hover:text-primary transition-colors tracking-tight">
+                  {name}
+                </CardTitle>
+                <Badge variant="secondary" className="text-xs shrink-0">
+                  {typeLabels[type]}
+                </Badge>
+                {patternCategory && patternCategory !== "General" && (
+                  <Badge variant="outline" className="text-xs shrink-0">
+                    {patternCategory}
+                  </Badge>
+                )}
+              </div>
+              <CardDescription className="text-muted-foreground/60 text-sm line-clamp-2">
+                {description}
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </motion.div>
+      </Link>
+    </motion.div>
+  );
+}
+
+export function TemplatesGrid({ byType, byPattern }: TemplatesGridProps) {
   let globalIndex = 0;
+
+  if (byPattern && byPattern.length > 0) {
+    return (
+      <div className="space-y-8">
+        <h2 className="font-display text-xl font-semibold tracking-tight">By AI pattern</h2>
+        {byPattern.map(({ patternCategory, type, entries }) => (
+          <section key={`${patternCategory}-${type}`}>
+            <h3 className="font-display mb-4 text-lg font-medium tracking-tight text-muted-foreground">
+              {patternCategory} — {typeLabels[type]}
+            </h3>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {entries.map((entry) => (
+                <TemplateCard
+                  key={entry.slug}
+                  {...entry}
+                  patternCategory={patternCategory}
+                  index={globalIndex++}
+                />
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       {byType.map(({ type, entries }) => (
@@ -41,41 +120,9 @@ export function TemplatesGrid({ byType }: TemplatesGridProps) {
             AI {typeLabels[type]}s
           </h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {entries.map(({ slug, name, description }) => {
-              const index = globalIndex++;
-              return (
-                <motion.div
-                  key={slug}
-                  custom={index}
-                  initial="initial"
-                  animate="animate"
-                  variants={cardVariants}
-                >
-                  <Link href={`/templates/${slug}`}>
-                    <motion.div
-                      whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                      className="h-full"
-                    >
-                      <Card className="group relative overflow-hidden transition-all hover:bg-accent/50 hover:border-primary/30 hover:shadow-[0_0_20px_var(--glow-primary)] h-full">
-                        <CardHeader className="relative z-10 p-6">
-                          <div className="flex items-center gap-2 mb-1">
-                            <CardTitle className="text-lg font-semibold group-hover:text-primary transition-colors tracking-tight">
-                              {name}
-                            </CardTitle>
-                            <Badge variant="secondary" className="text-xs shrink-0">
-                              {typeLabels[type]}
-                            </Badge>
-                          </div>
-                          <CardDescription className="text-muted-foreground/60 text-sm line-clamp-2">
-                            {description}
-                          </CardDescription>
-                        </CardHeader>
-                      </Card>
-                    </motion.div>
-                  </Link>
-                </motion.div>
-              );
-            })}
+            {entries.map((entry) => (
+              <TemplateCard key={entry.slug} {...entry} index={globalIndex++} />
+            ))}
           </div>
         </section>
       ))}

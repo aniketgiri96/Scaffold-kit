@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Outfit, JetBrains_Mono } from "next/font/google";
+import { Inter, Poppins, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/layout/navbar";
@@ -10,9 +10,10 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const outfit = Outfit({
+const poppins = Poppins({
   variable: "--font-display",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -34,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${outfit.variable} ${jetbrainsMono.variable} antialiased min-h-screen bg-background text-foreground relative`}
+        className={`${inter.variable} ${poppins.variable} ${jetbrainsMono.variable} antialiased min-h-screen bg-background text-foreground relative`}
       >
         <div className="fixed inset-0 bg-grid opacity-10 pointer-events-none -z-10" />
         <div className="fixed top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(50,150,255,0.1),transparent_50%)] pointer-events-none -z-10" />
