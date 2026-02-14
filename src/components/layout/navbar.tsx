@@ -65,12 +65,7 @@ export function Navbar() {
         {/* Desktop nav */}
         <div className="hidden md:flex md:items-center md:gap-6">
           <NavLinks />
-          <div className="flex items-center gap-3">
-            <ModeToggle />
-            <Button asChild size="default">
-              <Link href="/components">Get started</Link>
-            </Button>
-          </div>
+          <ModeToggle />
         </div>
 
         {/* Mobile menu */}
@@ -99,11 +94,6 @@ export function Navbar() {
                     </Link>
                   ))}
                 </nav>
-                <Button asChild className="w-full">
-                  <Link href="/components" onClick={() => setOpen(false)}>
-                    Get started
-                  </Link>
-                </Button>
               </div>
             </SheetContent>
           </Sheet>

@@ -37,7 +37,7 @@ export function HomeHero() {
               variants={item}
               className="font-display font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70"
             >
-              One-Stop UI Kit for <span className="text-gradient-accent italic">AI Developers</span>
+              One-Stop UI Kit for <span className=" italic">AI Developers</span>
             </motion.h1>
             <motion.p
               variants={item}
@@ -59,7 +59,7 @@ export function HomeHero() {
               <Button
                 size="lg"
                 variant="outline"
-                className="h-12 px-8 rounded-full border-border bg-muted/50 backdrop-blur-md hover:bg-muted transition-transform hover:scale-105 active:scale-95"
+                className="h-12 px-8 rounded-full border-border bg-muted/50 backdrop-blur-md hover:bg-muted hover:text-foreground text-foreground transition-transform hover:scale-105 active:scale-95"
                 asChild
               >
                 <Link href="/templates">AI patterns</Link>
