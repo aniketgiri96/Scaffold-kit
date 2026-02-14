@@ -19,6 +19,7 @@ const navLinks = [
   { href: "/docs", label: "Docs" },
   { href: "/components", label: "Components" },
   { href: "/templates", label: "Templates" },
+  { href: "/ml", label: "ML" },
 ] as const;
 
 function NavLinks({ onLinkClick }: { onLinkClick?: () => void }) {
@@ -58,7 +59,7 @@ export function Navbar() {
           href="/"
           className="font-display text-lg font-bold tracking-tight text-foreground hover:opacity-90 transition-opacity"
         >
-          DesignSystem
+          Scaffold
         </Link>
 
         {/* Desktop nav */}

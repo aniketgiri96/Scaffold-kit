@@ -8,19 +8,32 @@ import { cn } from "@/lib/utils"
 interface SidebarProps {
     componentItemsByCategory?: Record<string, { title: string; href: string }[]>
     categoryOrder?: string[]
+    mlItemsByCategory?: Record<string, { title: string; href: string }[]>
+    mlCategoryOrder?: string[]
 }
 
-export function Sidebar({ componentItemsByCategory = {}, categoryOrder = [] }: SidebarProps) {
+export function Sidebar({
+    componentItemsByCategory = {},
+    categoryOrder = [],
+    mlItemsByCategory = {},
+    mlCategoryOrder = [],
+}: SidebarProps) {
     const pathname = usePathname()
 
     const sidebarNav = docsConfig.sidebarNav.map((section) => {
-        if (section.title !== "Components" || categoryOrder.length === 0) {
-            return { ...section, items: section.items ?? [], categories: null as null }
+        if (section.title === "Components" && categoryOrder.length > 0) {
+            const categories = categoryOrder
+                .filter((cat) => componentItemsByCategory[cat]?.length)
+                .map((cat) => ({ title: cat, items: componentItemsByCategory[cat] ?? [] }))
+            return { ...section, items: [] as { title: string; href: string }[], categories }
         }
-        const categories = categoryOrder
-            .filter((cat) => componentItemsByCategory[cat]?.length)
-            .map((cat) => ({ title: cat, items: componentItemsByCategory[cat] ?? [] }))
-        return { ...section, items: [], categories }
+        if (section.title === "ML" && mlCategoryOrder.length > 0) {
+            const categories = mlCategoryOrder
+                .filter((cat) => mlItemsByCategory[cat]?.length)
+                .map((cat) => ({ title: cat, items: mlItemsByCategory[cat] ?? [] }))
+            return { ...section, items: [] as { title: string; href: string }[], categories }
+        }
+        return { ...section, items: section.items ?? [], categories: null as null }
     })
 
     return (

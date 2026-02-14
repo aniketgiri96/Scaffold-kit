@@ -18,7 +18,7 @@ export function Footer() {
               href="/"
               className="font-bold text-foreground hover:text-foreground/80 transition-colors"
             >
-              DesignSystem
+              Scaffold
             </Link>
             <nav className="flex items-center gap-6 text-muted-foreground">
               {footerLinks.map(({ href, label }) => (
@@ -33,7 +33,7 @@ export function Footer() {
             </nav>
           </div>
           <p className="text-sm text-muted-foreground">
-            © {year} Design System Platform. All rights reserved.
+            © {year} Scaffold. All rights reserved.
           </p>
         </div>
       </div>

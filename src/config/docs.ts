@@ -21,5 +21,9 @@ export const docsConfig = {
             title: "Components",
             items: [], // Populated from registry in components layout
         },
+        {
+            title: "ML",
+            items: [], // Populated from ML registry in ML layout
+        },
     ],
 }

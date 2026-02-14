@@ -5,6 +5,15 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-02-14
+
+### Minor change
+
+- **ML section:** New top-level `/ml` section with its own registry and category-based grouping. ML components are separate from Templates and include Dashboards, Charts, Model Management, Data, Training, Inference, LLM/NLP, Computer Vision, Utilities, Reporting, and Status.
+- **ML Phase 1 components:** ML Model Performance Dashboard (accuracy, F1, loss, accuracy-over-epochs chart), Resource Usage Dashboard (GPU/CPU/Memory with progress bars), Training Loss/Accuracy Curves (dual-axis Recharts), Confusion Matrix Heatmap, ROC/AUC Curve Display. All use mock data and design-system tokens.
+- **Recharts:** Added `recharts` for chart components. Chart theme in `src/features/ml/shared/chart-theme.tsx` uses CSS variables `--chart-1`–`--chart-5` (defined in `globals.css` for light/dark) so charts stay on-brand.
+- **Nav:** Added "ML" link to main navbar pointing to `/ml`.
+
 ## [0.4.0] - 2026-02-14
 
 ### Minor change

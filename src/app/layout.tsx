@@ -23,8 +23,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Design System Platform",
-  description: "A comprehensive design system platform.",
+  title: "Scaffold",
+  description: "A UI kit for AI developers. Copy-paste components and templates.",
 };
 
 export default function RootLayout({
