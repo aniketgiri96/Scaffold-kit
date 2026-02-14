@@ -5,6 +5,12 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.1] - 2026-02-14
+
+### UI change
+
+- **Primary color refresh:** Replaced high-saturation blue/cyan primary with a softer teal palette (hue 175, ~70% saturation) for an eye-friendly, rich look. Updated `--primary`, `--ring`, `--accent`, `--accent-foreground`, `--chart-1`, `--glow-primary`, and `--gradient-accent` in both light and dark themes in `globals.css` and design tokens.
+
 ## [0.5.0] - 2026-02-14
 
 ### Minor change

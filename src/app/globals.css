@@ -75,28 +75,28 @@
   --card-foreground: hsl(230 50% 10%);
   --popover: hsl(230 25% 100% / 0.9);
   --popover-foreground: hsl(230 50% 10%);
-  --primary: hsl(210 100% 50%);
+  --primary: hsl(175 70% 42%);
   --primary-foreground: hsl(0 0% 100%);
   --secondary: hsl(230 25% 90%);
   --secondary-foreground: hsl(230 50% 10%);
   --muted: hsl(230 25% 95%);
   --muted-foreground: hsl(230 20% 40%);
-  --accent: hsl(210 100% 95%);
-  --accent-foreground: hsl(210 100% 40%);
+  --accent: hsl(175 70% 95%);
+  --accent-foreground: hsl(175 70% 35%);
   --destructive: hsl(0 84% 60%);
   --destructive-foreground: hsl(0 0% 100%);
   --border: hsl(230 25% 90%);
   --input: hsl(230 25% 90%);
-  --ring: hsl(210 100% 50%);
+  --ring: hsl(175 70% 42%);
   --radius: 0.75rem;
-  --chart-1: hsl(210 100% 50%);
+  --chart-1: hsl(175 70% 42%);
   --chart-2: hsl(280 80% 55%);
   --chart-3: hsl(160 70% 45%);
   --chart-4: hsl(30 90% 55%);
   --chart-5: hsl(340 85% 55%);
 
   /* Glass & futuristic */
-  --glow-primary: hsla(210, 100%, 50%, 0.22);
+  --glow-primary: hsla(175, 70%, 42%, 0.22);
   --glow-destructive: hsl(0 84% 60% / 0.12);
   --shadow-default: 0 4px 12px hsl(230 50% 10% / 0.08);
   --glass-background: rgba(255, 255, 255, 0.7);
@@ -105,7 +105,7 @@
   --glass-border: rgba(255, 255, 255, 0.35);
   --glass-blur: 12px;
   --glass-blur-strong: 20px;
-  --gradient-accent: linear-gradient(135deg, hsl(210 100% 50%) 0%, hsl(280 80% 55%) 100%);
+  --gradient-accent: linear-gradient(135deg, hsl(175 70% 42%) 0%, hsl(280 80% 55%) 100%);
 }
 
 .dark {
@@ -115,27 +115,27 @@
   --card-foreground: hsl(210 20% 98%);
   --popover: hsl(230 40% 6% / 0.9);
   --popover-foreground: hsl(210 20% 98%);
-  --primary: hsl(190 100% 50%);
+  --primary: hsl(175 65% 48%);
   --primary-foreground: hsl(230 40% 4%);
   --secondary: hsl(230 30% 12%);
   --secondary-foreground: hsl(210 20% 98%);
   --muted: hsl(230 30% 12%);
   --muted-foreground: hsl(230 15% 70%);
-  --accent: hsl(190 100% 15% / 0.3);
-  --accent-foreground: hsl(190 100% 70%);
+  --accent: hsl(175 65% 15% / 0.3);
+  --accent-foreground: hsl(175 65% 70%);
   --destructive: hsl(0 84% 60%);
   --destructive-foreground: hsl(210 20% 98%);
   --border: hsl(230 30% 20%);
   --input: hsl(230 30% 20%);
-  --ring: hsl(190 100% 50%);
-  --chart-1: hsl(190 100% 50%);
+  --ring: hsl(175 65% 48%);
+  --chart-1: hsl(175 65% 48%);
   --chart-2: hsl(280 75% 60%);
   --chart-3: hsl(160 60% 50%);
   --chart-4: hsl(30 90% 55%);
   --chart-5: hsl(340 80% 60%);
 
   /* Glass & futuristic */
-  --glow-primary: hsla(190, 100%, 50%, 0.2);
+  --glow-primary: hsla(175, 65%, 48%, 0.2);
   --glow-destructive: hsl(0 84% 60% / 0.12);
   --shadow-default: 0 4px 12px hsl(210 20% 98% / 0.08);
   --glass-background: rgba(10, 12, 18, 0.6);
@@ -144,8 +144,8 @@
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-blur: 12px;
   --glass-blur-strong: 20px;
-  --neon-border: rgba(190, 100%, 50%, 0.2);
-  --gradient-accent: linear-gradient(135deg, hsl(190 100% 50%) 0%, hsl(280 75% 60%) 100%);
+  --neon-border: hsla(175, 65%, 48%, 0.2);
+  --gradient-accent: linear-gradient(135deg, hsl(175 65% 48%) 0%, hsl(280 75% 60%) 100%);
 }
 
 @layer base {
