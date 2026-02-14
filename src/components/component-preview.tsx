@@ -11,9 +11,9 @@ interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
   code: string;
   align?: "center" | "start" | "end";
-  /** Shadcn CLI slug for primitives (e.g. "button"). Builds command: npx scaffold add <slug>. */
+  /** Shadcn CLI slug for primitives (e.g. "button"). Builds command: npx aniketgiri96-scaffold-kit add <slug>. */
   cliSlug?: string;
-  /** Full CLI command when using namespaced registries (e.g. "npx scaffold add @templates/chat-message-row"). Takes precedence over cliSlug when set. */
+  /** Full CLI command when using namespaced registries (e.g. "npx aniketgiri96-scaffold-kit add @templates/chat-message-row"). Takes precedence over cliSlug when set. */
   cliInstallCommand?: string;
 }
 
@@ -34,7 +34,7 @@ export function ComponentPreview({
   cliInstallCommand,
   ...props
 }: ComponentPreviewProps) {
-  const cliCommand = cliInstallCommand ?? (cliSlug ? `npx scaffold add ${cliSlug}` : undefined);
+  const cliCommand = cliInstallCommand ?? (cliSlug ? `npx aniketgiri96-scaffold-kit add ${cliSlug}` : undefined);
   const [hasCopied, setHasCopied] = React.useState(false);
   const [hasCliCopied, setHasCliCopied] = React.useState(false);
   const [tab, setTab] = React.useState("preview");

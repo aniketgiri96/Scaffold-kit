@@ -37,7 +37,7 @@ export default async function TemplatePage({ params }: PageProps) {
       <ComponentPreview
         name={template.name}
         code={template.code}
-        cliInstallCommand={`npx scaffold add @templates/${slug}`}
+        cliInstallCommand={`npx aniketgiri96-scaffold-kit add @templates/${slug}`}
       >
         {template.component}
       </ComponentPreview>
