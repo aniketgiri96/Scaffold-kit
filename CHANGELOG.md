@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Minor change
 
-- **npm publish:** CLI is now publishable to npm. Use `npx aniketgiri96-scaffold-kit add @ml/<slug>` or `npx aniketgiri96-scaffold-kit add @templates/<slug>` from your project root. Package includes only `cli.js` and README; registry is served from the deployed app. Publish with `npm publish --access public` for the scoped package.
+- **npm publish:** CLI is now publishable to npm. Use `npx ai-scaffold-kit add @ml/<slug>` or `npx ai-scaffold-kit add @templates/<slug>` from your project root. Package includes only `cli.js` and README; registry is served from the deployed app. Publish with `npm publish --access public` for the scoped package.
 
 ## [0.5.1] - 2026-02-14
 

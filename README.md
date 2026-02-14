@@ -27,20 +27,20 @@ From your project root, run (no manual setup required).
 npx github:aniketgiri96/Scaffold-kit add @ml/ml-model-performance-dashboard
 ```
 
-**If the package is published to npm** (`aniketgiri96-scaffold-kit`), install it (optional) then run the add command:
+**If the package is published to npm** (`ai-scaffold-kit`), install it (optional) then run the add command:
 
 ```bash
-npm i aniketgiri96-scaffold-kit
-npx aniketgiri96-scaffold-kit add @ml/ml-model-performance-dashboard
+npm i ai-scaffold-kit
+npx ai-scaffold-kit add @ml/ml-model-performance-dashboard
 ```
 
 Or run without installing (npx fetches on demand):
 
 ```bash
-npx aniketgiri96-scaffold-kit add @ml/ml-model-performance-dashboard
+npx ai-scaffold-kit add @ml/ml-model-performance-dashboard
 ```
 
-Other examples (use the same prefix—GitHub or `aniketgiri96-scaffold-kit`—as above):
+Other examples (use the same prefix—GitHub or `ai-scaffold-kit`—as above):
 
 - **ML blocks:** `... add @ml/<slug>` (e.g. `@ml/ml-model-performance-dashboard`)
 - **Templates:** `... add @templates/<slug>` (e.g. `@templates/chat-message-row`)
@@ -48,7 +48,7 @@ Other examples (use the same prefix—GitHub or `aniketgiri96-scaffold-kit`—as
 
 The CLI ensures `components.json` exists and contains the `@ml` and `@templates` registries, then runs the add.
 
-**Registry URL:** The CLI defaults to `https://scaffold-kit-zeta.vercel.app/api/registry`. That host must be a deployment of **this repo** (Scaffold-kit) so that `/api/registry/ml/...` and `/api/registry/templates/...` work. If you get "item was not found" or 404, deploy this app to Vercel (or your host), then either redeploy at that URL or point the CLI at your deployment: `DSP_REGISTRY_BASE=https://your-app.vercel.app/api/registry npx aniketgiri96-scaffold-kit add @ml/...`. For local development, set `DSP_REGISTRY_BASE=http://localhost:3000/api/registry` and run this app with `npm run dev` in another terminal.
+**Registry URL:** The CLI defaults to `https://scaffold-kit-zeta.vercel.app/api/registry`. That host must be a deployment of **this repo** (Scaffold-kit) so that `/api/registry/ml/...` and `/api/registry/templates/...` work. If you get "item was not found" or 404, deploy this app to Vercel (or your host), then either redeploy at that URL or point the CLI at your deployment: `DSP_REGISTRY_BASE=https://your-app.vercel.app/api/registry npx ai-scaffold-kit add @ml/...`. For local development, set `DSP_REGISTRY_BASE=http://localhost:3000/api/registry` and run this app with `npm run dev` in another terminal.
 
 ### Alternative: manual one-time setup
 
@@ -122,4 +122,4 @@ Next.js, React, Radix UI, Tailwind CSS, Framer Motion.
 
 ## Publishing (maintainers)
 
-To publish the CLI to npm: bump version in `package.json`, update `CHANGELOG.md` with the new version and changes, then run `npm login` and `npm publish --access public` from the repo root. If you use a scoped package name, run `npm publish --access public`; for an unscoped name like `aniketgiri96-scaffold-kit`, `npm publish` is enough.
+To publish the CLI to npm: bump version in `package.json`, update `CHANGELOG.md` with the new version and changes, then run `npm login` and `npm publish --access public` from the repo root. If you use a scoped package name, run `npm publish --access public`; for an unscoped name like `ai-scaffold-kit`, `npm publish` is enough.
