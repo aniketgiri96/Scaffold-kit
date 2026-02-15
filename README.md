@@ -48,7 +48,7 @@ Other examples (use the same prefix—GitHub or `ai-scaffold-kit`—as above):
 
 The CLI ensures `components.json` exists and contains the `@ml` and `@templates` registries, then runs the add.
 
-**Registry URL:** The CLI defaults to `https://scaffold-kit-zeta.vercel.app/api/registry`. That host must be a deployment of **this repo** (Scaffold-kit) so that `/api/registry/ml/...` and `/api/registry/templates/...` work. If you get "item was not found" or 404, deploy this app to Vercel (or your host), then either redeploy at that URL or point the CLI at your deployment: `DSP_REGISTRY_BASE=https://your-app.vercel.app/api/registry npx ai-scaffold-kit add @ml/...`. For local development, set `DSP_REGISTRY_BASE=http://localhost:3000/api/registry` and run this app with `npm run dev` in another terminal.
+**Registry URL:** The CLI defaults to `https://www.techwithcare.in/api/registry`. That host must be a deployment of **this repo** (Scaffold-kit) so that `/api/registry/ml/...` and `/api/registry/templates/...` work. If you get "item was not found" or 404, deploy this app to Vercel (or your host), then either redeploy at that URL or point the CLI at your deployment: `DSP_REGISTRY_BASE=https://your-app.vercel.app/api/registry npx ai-scaffold-kit add @ml/...`. For local development, set `DSP_REGISTRY_BASE=http://localhost:3000/api/registry` and run this app with `npm run dev` in another terminal.
 
 ### Alternative: manual one-time setup
 
@@ -66,8 +66,8 @@ If you prefer to add the script and registries yourself (or use `pnpm ui:add` / 
    - **If you already have `components.json`** (e.g. from shadcn): Add this `registries` block (merge with any existing `registries`):
      ```json
      "registries": {
-       "@templates": "https://scaffold-kit-zeta.vercel.app/api/registry/templates/{name}.json",
-       "@ml": "https://scaffold-kit-zeta.vercel.app/api/registry/ml/{name}.json"
+       "@templates": "https://www.techwithcare.in/api/registry/templates/{name}.json",
+       "@ml": "https://www.techwithcare.in/api/registry/ml/{name}.json"
      }
      ```
 
@@ -110,6 +110,26 @@ Files are written to `src/components/templates/` and `src/components/ml/` respec
 ## Using with Cursor / Copilot
 
 Open a component or template page on this site, switch to the **Code** tab, and copy the code. You can also use the manifest API: `GET /api/manifest` returns a JSON catalog of all components and templates for AI tools. Copy-paste only—no runtime dependency on this platform.
+
+## MCP server (any IDE)
+
+You can use the design system from **any MCP-capable IDE** (Cursor, Claude Desktop, Windsurf, Continue, etc.) by adding the Scaffold-kit MCP server. The server exposes tools such as `get_manifest`, `get_component`, `get_template`, `get_context`, `get_tokens`, `list_recipes`, and `get_recipe` so the IDE’s AI can discover and use components and templates without leaving the editor.
+
+**Run the server:** `npx ai-scaffold-kit mcp` (or `scaffold mcp` if the CLI is installed).
+
+**Standard stdio config** (same for all IDEs; only the config file location differs):
+
+- **command:** `npx` (or `node`)
+- **args:** `["ai-scaffold-kit", "mcp"]`
+- **env:** `SCAFFOLD_KIT_BASE_URL` — optional; base URL of your Scaffold-kit instance (default: `https://www.techwithcare.in`). For local: `http://localhost:3000`.
+
+**Where to add this config:**
+
+- **Cursor:** `~/.cursor/mcp.json` or project `.cursor/mcp.json` — add under `mcpServers`, e.g. `"scaffold-kit": { "command": "npx", "args": ["ai-scaffold-kit", "mcp"], "env": { "SCAFFOLD_KIT_BASE_URL": "https://www.techwithcare.in" } }`
+- **Claude Desktop:** MCP server config in the app’s config directory (see Claude Desktop docs for your OS).
+- **Windsurf / Continue / others:** Use the same `command`, `args`, and `env` in your IDE’s MCP settings (each IDE documents its config path).
+
+See [For AI developers](/docs/for-ai-developers) for more detail and copy-paste snippets.
 
 ## Docs
 

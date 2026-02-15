@@ -96,6 +96,35 @@ export default function ForAiDevelopersPage() {
 
       <section className="space-y-4">
         <h2 className="text-xl font-semibold tracking-tight">
+          MCP server (all IDEs)
+        </h2>
+        <p className="text-muted-foreground">
+          Use the design system from <strong className="text-foreground">any MCP-capable IDE</strong> (Cursor, Claude Desktop, Windsurf, Continue, etc.) by adding the Scaffold-kit MCP server. The server exposes tools: <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_manifest</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_component</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_template</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_context</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_tokens</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">list_recipes</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_recipe</code>.
+        </p>
+        <p className="text-muted-foreground">
+          Run: <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">npx ai-scaffold-kit mcp</code>. Configure your IDE to spawn this with stdio using the same <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">command</code> / <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">args</code> / <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">env</code> below (config file location is IDE-specific).
+        </p>
+        <ul className="list-disc space-y-1 pl-6 text-muted-foreground">
+          <li><strong className="text-foreground">Cursor:</strong> <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">~/.cursor/mcp.json</code> or project <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">.cursor/mcp.json</code></li>
+          <li><strong className="text-foreground">Claude Desktop:</strong> app config directory (see Claude Desktop docs)</li>
+          <li><strong className="text-foreground">Windsurf / Continue:</strong> same config; see each IDE’s MCP docs for the config path</li>
+        </ul>
+        <pre className="rounded-lg bg-muted p-4 text-sm overflow-x-auto">
+{`// Example: Cursor mcp.json — add to mcpServers
+"scaffold-kit": {
+  "command": "npx",
+  "args": ["ai-scaffold-kit", "mcp"],
+  "env": {
+    "SCAFFOLD_KIT_BASE_URL": "https://www.techwithcare.in"
+  }
+}
+
+// Local instance: use "http://localhost:3000" for SCAFFOLD_KIT_BASE_URL`}
+        </pre>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold tracking-tight">
           Design tokens (copy-paste)
         </h2>
         <p className="text-muted-foreground">
