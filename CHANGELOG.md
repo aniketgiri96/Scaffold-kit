@@ -5,6 +5,12 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-02-14
+
+### Minor change
+
+- **MCP server:** Expose an MCP server for use in any MCP-capable IDE (Cursor, Claude Desktop, Windsurf, Continue, etc.). Run `npx ai-scaffold-kit mcp` and add the server to your IDE’s MCP config (stdio). Tools: `get_manifest`, `get_component`, `get_template`, `get_context`, `get_tokens`, `list_recipes`, `get_recipe`. Configurable via `SCAFFOLD_KIT_BASE_URL` or `DSP_REGISTRY_BASE`. Documented in README and For AI developers.
+
 ## [0.6.0] - 2026-02-14
 
 ### Minor change
