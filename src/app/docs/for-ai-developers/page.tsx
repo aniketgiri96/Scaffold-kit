@@ -104,6 +104,19 @@ export default function ForAiDevelopersPage() {
 
       <section className="space-y-4">
         <h2 className="text-xl font-semibold tracking-tight">
+          Building dashboards (ML)
+        </h2>
+        <p className="text-muted-foreground">
+          ML components are production-ready with <strong className="text-foreground">typed props</strong> and optional demo defaults.
+          The Code tab and CLI-installed snippet match the live component API. When building dashboards: pass your API data as props
+          (e.g. <code className="rounded bg-muted px-1 py-0.5 font-mono text-sm">metrics</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-sm">accuracyCurve</code> for the performance dashboard);
+          use <code className="rounded bg-muted px-1 py-0.5 font-mono text-sm">./shared/chart-theme</code> for charts so colors respect your design tokens.
+          Add loading/error boundaries when wiring async data.
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold tracking-tight">
           MCP server (all IDEs)
         </h2>
         <p className="text-muted-foreground">

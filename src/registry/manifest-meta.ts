@@ -45,11 +45,12 @@ export const componentManifestMeta: Record<string, ComponentManifestMeta> = {
 export const templateManifestMeta: Record<string, TemplateManifestMeta> = {
   "chat-message-row": {
     props: [
-      { name: "isUser", type: "boolean", required: true, description: "Whether the message is from the user" },
+      { name: "role", type: "user | assistant", required: true, description: "Message sender (user = right, assistant = left)" },
       { name: "content", type: "string", required: true, description: "Message text" },
+      { name: "className", type: "string", required: false, description: "Optional class for the row" },
     ],
-    dependencies: ["@/components/ui/avatar"],
-    whenToUse: "Use for each message in a chat thread (user or assistant). Pair with Chat layout.",
+    dependencies: ["@/components/ui/avatar", "framer-motion", "@/lib/utils"],
+    whenToUse: "Use for each message in a chat thread. User messages align right, assistant left. Themed via --chat-* CSS variables.",
     alternatives: [],
     patternCategory: "Chat",
   },
@@ -117,9 +118,11 @@ export const templateManifestMeta: Record<string, TemplateManifestMeta> = {
     patternCategory: "Prompt input",
   },
   "chat-layout": {
-    props: [],
-    dependencies: ["@/components/ui/button", "@/components/ui/input", "@/components/ui/avatar", "@/components/ui/scroll-area", "lucide-react"],
-    whenToUse: "Full chat UI: sidebar + message list + input. Compose with chat-message-row, typing-indicator, prompt-input-bar.",
+    props: [
+      { name: "onDeleteConversation", type: "(id: string) => void", required: false, description: "Called when a conversation is deleted from the sidebar" },
+    ],
+    dependencies: ["@/components/ui/button", "@/components/ui/input", "@/components/ui/avatar", "@/components/ui/scroll-area", "@/components/ui/dropdown-menu", "framer-motion", "lucide-react", "@/lib/utils"],
+    whenToUse: "Full chat UI: sidebar with delete-per-conversation, message list (user right / assistant left), prompt input. Uses --chat-* theme variables and micro-animations.",
     alternatives: ["ai-chat-playground", "ai-assistant-panel"],
     patternCategory: "Layout",
   },
@@ -134,9 +137,18 @@ export const templateManifestMeta: Record<string, TemplateManifestMeta> = {
     patternCategory: "Layout",
   },
   "ai-chat-playground": {
-    props: [],
-    dependencies: ["@/components/ui/button", "@/components/ui/textarea", "@/components/ui/avatar", "@/components/ui/badge", "@/components/ui/scroll-area", "@/components/ui/alert", "@/components/ui/select", "lucide-react"],
-    whenToUse: "Full-page-style chat: header with model selector, messages, suggested prompts, prompt bar with attachments. Use for dedicated chat screens.",
+    props: [
+      { name: "onClearChat", type: "() => void", required: false, description: "Called when user clears the chat from header menu" },
+      { name: "onRetry", type: "() => void", required: false, description: "Called when user clicks Retry on the error block" },
+      { name: "onDismiss", type: "() => void", required: false, description: "Called when user clicks Dismiss on the error block" },
+      { name: "suggestedPrompts", type: "string[]", required: false, description: "Quick-reply prompt labels (e.g. Summarize, Explain)" },
+      { name: "onSelectPrompt", type: "(p: string) => void", required: false, description: "Called when user selects a suggested prompt" },
+      { name: "attachments", type: "{ id: string; name: string }[]", required: false, description: "Attachment chips to show above the input" },
+      { name: "onRemoveAttachment", type: "(id: string) => void", required: false, description: "Called when user removes an attachment" },
+      { name: "onSend", type: "(message: string) => void", required: false, description: "Called when user sends a message" },
+    ],
+    dependencies: ["@/components/ui/button", "@/components/ui/textarea", "@/components/ui/avatar", "@/components/ui/badge", "@/components/ui/scroll-area", "@/components/ui/alert", "@/components/ui/select", "@/components/ui/dropdown-menu", "framer-motion", "lucide-react", "@/lib/utils"],
+    whenToUse: "Full-page chat: header with model selector and Clear chat, messages (user left / assistant right), code block, error, typing, suggested prompts, prompt bar with attachments. Uses --chat-* theme vars and micro-animations.",
     alternatives: ["chat-layout", "ai-assistant-panel"],
     patternCategory: "Layout",
   },

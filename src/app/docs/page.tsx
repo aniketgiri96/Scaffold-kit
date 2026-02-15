@@ -36,7 +36,9 @@ export default function DocsPage() {
           <li>
             <strong className="text-foreground">ML Components</strong> — Dashboards,
             charts, model management, data, training, inference, and more for ML
-            platforms. Install with <code className="rounded bg-muted px-1 py-0.5 font-mono text-sm">npx ai-scaffold-kit add @ml/&lt;slug&gt;</code>. See{" "}
+            platforms. Production-ready with <strong className="text-foreground">typed props</strong> and
+            optional demo defaults; wire your API data and use as-is. Install with{" "}
+            <code className="rounded bg-muted px-1 py-0.5 font-mono text-sm">npx ai-scaffold-kit add @ml/&lt;slug&gt;</code>. See{" "}
             <Link href="/ml" className="text-primary underline hover:no-underline">
               ML Components
             </Link>{" "}

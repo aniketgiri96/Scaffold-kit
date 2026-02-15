@@ -69,24 +69,112 @@ export const mlRegistry: Record<string, MLTemplateEntry> = {
     type: "page",
     category: "Dashboard",
     component: <MLModelPerformanceDashboard />,
-    code: `import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts"
-import { CHART_STROKE } from "./shared/chart-theme"
+    code: `"use client";
 
-export function MLModelPerformanceDashboard() {
-  const data = [/* your metrics */]
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
+import { CHART_STROKE } from "./shared/chart-theme";
+
+export interface MLModelPerformanceDashboardProps {
+  metrics?: { accuracy: string; f1: string; loss: string; status: string; version: string };
+  accuracyCurve?: Array<{ epoch: number; train: number; val: number }>;
+}
+
+const DEFAULT_METRICS = {
+  accuracy: "90.2%",
+  f1: "0.891",
+  loss: "0.24",
+  status: "Ready",
+  version: "v1.2.0",
+};
+
+const DEFAULT_ACCURACY_CURVE = [
+  { epoch: 1, train: 0.45, val: 0.42 },
+  { epoch: 2, train: 0.62, val: 0.58 },
+  { epoch: 3, train: 0.74, val: 0.71 },
+  { epoch: 4, train: 0.82, val: 0.78 },
+  { epoch: 5, train: 0.88, val: 0.84 },
+  { epoch: 6, train: 0.92, val: 0.87 },
+  { epoch: 7, train: 0.95, val: 0.89 },
+  { epoch: 8, train: 0.97, val: 0.9 },
+];
+
+export function MLModelPerformanceDashboard({
+  metrics = DEFAULT_METRICS,
+  accuracyCurve = DEFAULT_ACCURACY_CURVE,
+}: MLModelPerformanceDashboardProps = {}) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Card>...</Card>
-      <ResponsiveContainer width="100%" height={280}>
-        <LineChart data={data}>
-          <Line dataKey="train" stroke={CHART_STROKE.primary} />
-          <Line dataKey="val" stroke={CHART_STROKE.secondary} />
-        </LineChart>
-      </ResponsiveContainer>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-sm font-medium text-muted-foreground">Accuracy</CardTitle>
+          <Badge variant="secondary">Last epoch</Badge>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold text-primary">{metrics.accuracy}</div>
+          <p className="text-xs text-muted-foreground">Validation</p>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-sm font-medium text-muted-foreground">F1 Score</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{metrics.f1}</div>
+          <p className="text-xs text-muted-foreground">Macro avg</p>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-sm font-medium text-muted-foreground">Loss</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{metrics.loss}</div>
+          <p className="text-xs text-muted-foreground">Cross-entropy</p>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-sm font-medium text-muted-foreground">Status</CardTitle>
+          <Badge className="bg-green-500/90 border-0">{metrics.status}</Badge>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">Deployed</div>
+          <p className="text-xs text-muted-foreground">{metrics.version}</p>
+        </CardContent>
+      </Card>
+      <Card className="md:col-span-2 lg:col-span-4">
+        <CardHeader>
+          <CardTitle>Accuracy over epochs</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[280px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={accuracyCurve} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                <XAxis dataKey="epoch" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} domain={[0, 1]} />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="train" name="Train" stroke={CHART_STROKE.primary} strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="val" name="Validation" stroke={CHART_STROKE.secondary} strokeWidth={2} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
     </div>
-  )
+  );
 }
 `,
   },
@@ -97,24 +185,86 @@ export function MLModelPerformanceDashboard() {
     type: "page",
     category: "Dashboard",
     component: <ResourceUsageDashboard />,
-    code: `import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-import { Badge } from "@/components/ui/badge"
+    code: `"use client";
 
-export function ResourceUsageDashboard() {
-  const resources = [{ name: "GPU 0", usage: 78 }, ...]
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+
+export interface ResourceUsageItem {
+  name: string;
+  usage: number;
+  label: string;
+  status?: "active" | "warning" | "error";
+}
+
+export interface ClusterSummary {
+  totalGpuMemory: string;
+  activeJobs: number;
+  queue: number;
+}
+
+export interface ResourceUsageDashboardProps {
+  resources?: ResourceUsageItem[];
+  clusterSummary?: ClusterSummary;
+}
+
+const DEFAULT_RESOURCES: ResourceUsageItem[] = [
+  { name: "GPU 0", usage: 78, label: "GPU", status: "active" },
+  { name: "GPU 1", usage: 45, label: "GPU", status: "active" },
+  { name: "CPU", usage: 62, label: "CPU", status: "active" },
+  { name: "Memory", usage: 84, label: "RAM", status: "warning" },
+];
+
+const DEFAULT_CLUSTER_SUMMARY: ClusterSummary = {
+  totalGpuMemory: "32 GB",
+  activeJobs: 3,
+  queue: 2,
+};
+
+export function ResourceUsageDashboard({
+  resources = DEFAULT_RESOURCES,
+  clusterSummary = DEFAULT_CLUSTER_SUMMARY,
+}: ResourceUsageDashboardProps = {}) {
   return (
     <div className="grid gap-4 md:grid-cols-2">
       {resources.map((r) => (
         <Card key={r.name}>
-          <CardHeader>...</CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">{r.name}</CardTitle>
+            <Badge variant={r.usage > 80 ? "destructive" : "secondary"} className="text-xs">
+              {r.usage}%
+            </Badge>
+          </CardHeader>
           <CardContent>
-            <Progress value={r.usage} />
+            <Progress value={r.usage} className="h-2" />
+            <p className="mt-1 text-xs text-muted-foreground">{r.label} utilization</p>
           </CardContent>
         </Card>
       ))}
+      <Card className="md:col-span-2">
+        <CardHeader>
+          <CardTitle>Cluster summary</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap gap-6 text-sm">
+            <div>
+              <span className="text-muted-foreground">Total GPU memory:</span>{" "}
+              <span className="font-medium">{clusterSummary.totalGpuMemory}</span>
+            </div>
+            <div>
+              <span className="text-muted-foreground">Active jobs:</span>{" "}
+              <span className="font-medium">{clusterSummary.activeJobs}</span>
+            </div>
+            <div>
+              <span className="text-muted-foreground">Queue:</span>{" "}
+              <span className="font-medium">{clusterSummary.queue}</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
-  )
+  );
 }
 `,
   },
@@ -125,18 +275,60 @@ export function ResourceUsageDashboard() {
     type: "block",
     category: "Charts",
     component: <TrainingLossAccuracyCurves />,
-    code: `import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts"
-import { CHART_STROKE } from "./shared/chart-theme"
+    code: `"use client";
 
-export function TrainingLossAccuracyCurves({ data }) {
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
+import { CHART_STROKE } from "./shared/chart-theme";
+
+export interface LossAccuracyPoint {
+  step: number;
+  loss: number;
+  accuracy: number;
+}
+
+const DEFAULT_DATA: LossAccuracyPoint[] = [
+  { step: 0, loss: 0.89, accuracy: 0.35 },
+  { step: 100, loss: 0.62, accuracy: 0.58 },
+  { step: 200, loss: 0.41, accuracy: 0.72 },
+  { step: 300, loss: 0.28, accuracy: 0.82 },
+  { step: 400, loss: 0.19, accuracy: 0.88 },
+  { step: 500, loss: 0.14, accuracy: 0.92 },
+  { step: 600, loss: 0.11, accuracy: 0.94 },
+  { step: 700, loss: 0.09, accuracy: 0.96 },
+  { step: 800, loss: 0.07, accuracy: 0.97 },
+  { step: 900, loss: 0.06, accuracy: 0.98 },
+];
+
+export interface TrainingLossAccuracyCurvesProps {
+  data?: LossAccuracyPoint[];
+}
+
+export function TrainingLossAccuracyCurves({ data = DEFAULT_DATA }: TrainingLossAccuracyCurvesProps = {}) {
   return (
-    <ResponsiveContainer width="100%" height={320}>
-      <LineChart data={data}>
-        <Line yAxisId="left" dataKey="loss" stroke={CHART_STROKE.primary} />
-        <Line yAxisId="right" dataKey="accuracy" stroke={CHART_STROKE.secondary} />
-      </LineChart>
-    </ResponsiveContainer>
-  )
+    <div className="h-[320px] w-full rounded-lg border border-border bg-card p-4">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={data} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+          <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+          <XAxis dataKey="step" tick={{ fontSize: 12 }} />
+          <YAxis yAxisId="left" tick={{ fontSize: 12 }} />
+          <YAxis yAxisId="right" orientation="right" domain={[0, 1]} tick={{ fontSize: 12 }} />
+          <Tooltip />
+          <Legend />
+          <Line yAxisId="left" type="monotone" dataKey="loss" name="Loss" stroke={CHART_STROKE.primary} strokeWidth={2} dot={false} />
+          <Line yAxisId="right" type="monotone" dataKey="accuracy" name="Accuracy" stroke={CHART_STROKE.secondary} strokeWidth={2} dot={false} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
 }
 `,
   },
@@ -197,25 +389,70 @@ export function RocAucCurve({ data, auc }) {
     type: "block",
     category: "Model Management",
     component: <ModelCard />,
-    code: `import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+    code: `"use client";
 
-export function ModelCard({ name, version, framework, size, status }) {
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+export interface ModelCardProps {
+  name?: string;
+  version?: string;
+  framework?: string;
+  size?: string;
+  lastUpdated?: string;
+  status?: string;
+}
+
+const DEFAULT_MODEL: Required<ModelCardProps> = {
+  name: "bert-classifier-v1",
+  version: "1.2.0",
+  framework: "PyTorch",
+  size: "440 MB",
+  lastUpdated: "2024-01-15",
+  status: "Ready",
+};
+
+export function ModelCard({
+  name = DEFAULT_MODEL.name,
+  version = DEFAULT_MODEL.version,
+  framework = DEFAULT_MODEL.framework,
+  size = DEFAULT_MODEL.size,
+  lastUpdated = DEFAULT_MODEL.lastUpdated,
+  status = DEFAULT_MODEL.status,
+}: ModelCardProps = {}) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{name}</CardTitle>
-        <Badge>{status}</Badge>
+    <Card className="max-w-md">
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <CardTitle className="text-lg font-semibold">{name}</CardTitle>
+        <Badge className="bg-green-500/90 border-0">{status}</Badge>
       </CardHeader>
-      <CardContent>
-        <div>Version: {version}</div>
-        <div>Framework: {framework}</div>
-        <div>Size: {size}</div>
-        <Button size="sm">Deploy</Button>
+      <CardContent className="space-y-4">
+        <div className="grid grid-cols-2 gap-3 text-sm">
+          <div>
+            <span className="text-muted-foreground">Version</span>
+            <p className="font-medium">{version}</p>
+          </div>
+          <div>
+            <span className="text-muted-foreground">Framework</span>
+            <p className="font-medium">{framework}</p>
+          </div>
+          <div>
+            <span className="text-muted-foreground">Size</span>
+            <p className="font-medium">{size}</p>
+          </div>
+          <div>
+            <span className="text-muted-foreground">Last updated</span>
+            <p className="font-medium">{lastUpdated}</p>
+          </div>
+        </div>
+        <div className="flex gap-2">
+          <Button size="sm">Deploy</Button>
+          <Button size="sm" variant="outline">View details</Button>
+        </div>
       </CardContent>
     </Card>
-  )
+  );
 }
 `,
   },

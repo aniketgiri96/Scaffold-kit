@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "scaffold-kit": {
+      "command": "npx",
+      "args": ["ai-scaffold-kit", "mcp"],
+      "env": {
+        "SCAFFOLD_KIT_BASE_URL": "https://www.techwithcare.in"
+      }
+    }
+  }
+}

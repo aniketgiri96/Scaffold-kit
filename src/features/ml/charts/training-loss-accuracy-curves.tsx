@@ -11,8 +11,9 @@ import {
   Legend,
 } from "recharts";
 import { CHART_STROKE } from "@/features/ml/shared/chart-theme";
+import type { LossAccuracyPoint } from "@/features/ml/shared/types";
 
-const mockData = [
+const DEFAULT_DATA: LossAccuracyPoint[] = [
   { step: 0, loss: 0.89, accuracy: 0.35 },
   { step: 100, loss: 0.62, accuracy: 0.58 },
   { step: 200, loss: 0.41, accuracy: 0.72 },
@@ -25,11 +26,15 @@ const mockData = [
   { step: 900, loss: 0.06, accuracy: 0.98 },
 ];
 
-export function TrainingLossAccuracyCurves() {
+export interface TrainingLossAccuracyCurvesProps {
+  data?: LossAccuracyPoint[];
+}
+
+export function TrainingLossAccuracyCurves({ data = DEFAULT_DATA }: TrainingLossAccuracyCurvesProps = {}) {
   return (
     <div className="h-[320px] w-full rounded-lg border border-border bg-card p-4">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={mockData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+        <LineChart data={data} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
           <XAxis dataKey="step" tick={{ fontSize: 12 }} />
           <YAxis yAxisId="left" tick={{ fontSize: 12 }} />
