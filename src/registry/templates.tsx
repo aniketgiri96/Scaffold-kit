@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Send, Bot, Sparkles, CircleAlert, Copy, X } from "lucide-react";
+import { ChatMessageRow, ChatLayout, AIChatPlayground } from "@/features/chat";
 
 export type TemplateType = "block" | "page";
 
@@ -38,32 +39,58 @@ export const templatesRegistry: Record<string, TemplateEntry> = {
   "chat-message-row": {
     slug: "chat-message-row",
     name: "Chat message row",
-    description: "A single message row for user or assistant with avatar and content.",
+    description: "A single message row for user (right) or assistant (left) with avatar, themed bubble, and micro-animation.",
     type: "block",
     component: (
-      <div className="flex gap-3 max-w-md">
-        <Avatar className="h-8 w-8 shrink-0 border border-primary/30">
-          <AvatarFallback className="bg-primary/20 text-primary text-xs">AI</AvatarFallback>
-        </Avatar>
-        <div className="rounded-lg glass px-3 py-2 text-sm">
-          <p className="text-foreground">Here’s a summary of the changes. Should I apply them?</p>
-        </div>
+      <div className="space-y-4" style={{ gap: "var(--chat-message-gap)" }}>
+        <ChatMessageRow role="user" content="What's the best way to structure this API?" />
+        <ChatMessageRow role="assistant" content="Here's a summary of the changes. Should I apply them?" />
       </div>
     ),
-    code: `import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+    code: `"use client"
 
-export function ChatMessageRow({ isUser, content }: { isUser: boolean; content: string }) {
+import { motion } from "framer-motion"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { cn } from "@/lib/utils"
+
+const messageVariants = {
+  initial: { opacity: 0, y: 8 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -4 },
+}
+const transition = { duration: 0.22, ease: "easeOut" }
+
+export function ChatMessageRow({ role, content, className }: { role: "user" | "assistant"; content: string; className?: string }) {
+  const isUser = role === "user"
   return (
-    <div className="flex gap-3 max-w-md">
-      <Avatar className="h-8 w-8 shrink-0 border border-primary/30">
-        <AvatarFallback className="bg-primary/20 text-primary text-xs">
+    <motion.div
+      layout
+      initial={messageVariants.initial}
+      animate={messageVariants.animate}
+      exit={messageVariants.exit}
+      transition={transition}
+      className={cn(
+        "flex gap-3 w-full",
+        isUser ? "justify-start" : "justify-end flex-row-reverse",
+        className
+      )}
+    >
+      <Avatar className={cn("h-8 w-8 shrink-0 border", isUser ? "border-border" : "border-primary/30")}>
+        <AvatarFallback className={cn("text-xs", isUser ? "bg-muted text-muted-foreground" : "bg-primary/20 text-primary")}>
           {isUser ? "U" : "AI"}
         </AvatarFallback>
       </Avatar>
-      <div className="rounded-lg glass px-3 py-2 text-sm">
+      <div
+        className={cn(
+          "rounded-[var(--chat-bubble-radius)] px-3 py-2 text-sm backdrop-filter blur-[var(--glass-blur)] border",
+          isUser
+            ? "bg-[var(--chat-user-bg)] text-[var(--chat-user-text)] border-primary/20"
+            : "bg-[var(--chat-assistant-bg)] text-[var(--chat-assistant-text)] border-[var(--glass-border)]"
+        )}
+      >
         <p className="text-foreground">{content}</p>
       </div>
-    </div>
+    </motion.div>
   )
 }
 `,
@@ -197,63 +224,113 @@ export function AgentAvatarStatus({ status = "live", label = "Assistant" }) {
   "chat-layout": {
     slug: "chat-layout",
     name: "Chat layout",
-    description: "Full layout with sidebar and main chat thread area.",
+    description: "Full layout with sidebar (conversation list with delete), message thread (user right / assistant left), and prompt input. Uses theme variables and micro-animations.",
     type: "page",
-    component: (
-      <div className="flex h-[420px] w-full max-w-4xl rounded-xl glass overflow-hidden">
-        <aside className="w-56 glass border-0 border-r border-border p-3 flex flex-col gap-2">
-          <Button variant="ghost" size="sm" className="justify-start">
-            <Bot className="mr-2 h-4 w-4" />
-            New chat
-          </Button>
-          <ScrollArea className="flex-1">
-            <div className="space-y-1 text-sm text-muted-foreground">
-              <div className="rounded-md px-2 py-1.5 bg-accent/50 text-foreground">Summary doc</div>
-              <div className="rounded-md px-2 py-1.5 hover:bg-accent/30 cursor-pointer">Code review</div>
-              <div className="rounded-md px-2 py-1.5 hover:bg-accent/30 cursor-pointer">API design</div>
-            </div>
-          </ScrollArea>
-        </aside>
-        <main className="flex-1 flex flex-col min-w-0">
-          <ScrollArea className="flex-1 p-4 space-y-4">
-            <div className="flex gap-3">
-              <Avatar className="h-8 w-8 shrink-0"><AvatarFallback className="text-xs">U</AvatarFallback></Avatar>
-              <div className="rounded-lg glass px-3 py-2 text-sm">What’s the best way to structure this API?</div>
-            </div>
-            <div className="flex gap-3">
-              <Avatar className="h-8 w-8 shrink-0 border border-primary/30"><AvatarFallback className="bg-primary/20 text-primary text-xs">AI</AvatarFallback></Avatar>
-              <div className="rounded-lg glass px-3 py-2 text-sm">Consider REST with versioned routes and clear status codes. I can draft a spec.</div>
-            </div>
-          </ScrollArea>
-          <div className="p-3 border-t border-border">
-            <div className="flex gap-2 rounded-lg glass p-2">
-              <Input placeholder="Type a message..." className="border-0 bg-transparent focus-visible:ring-0" />
-              <Button size="icon" className="shrink-0 h-9 w-9"><Send className="h-4 w-4" /></Button>
-            </div>
-          </div>
-        </main>
-      </div>
-    ),
-    code: `import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Bot, Send } from "lucide-react"
+    component: <ChatLayout />,
+    code: `"use client"
 
-export function ChatLayout() {
+import { useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Bot, Send, MoreHorizontal, Trash2 } from "lucide-react"
+import { cn } from "@/lib/utils"
+
+function ChatMessageRow({ role, content, className }: { role: "user" | "assistant"; content: string; className?: string }) {
+  const isUser = role === "user"
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -4 }}
+      transition={{ duration: 0.22, ease: "easeOut" }}
+      className={cn(
+        "flex gap-3 w-full",
+        isUser ? "justify-start" : "justify-end flex-row-reverse",
+        className
+      )}
+    >
+      <Avatar className={cn("h-8 w-8 shrink-0 border", isUser ? "border-border" : "border-primary/30")}>
+        <AvatarFallback className={cn("text-xs", isUser ? "bg-muted text-muted-foreground" : "bg-primary/20 text-primary")}>
+          {isUser ? "U" : "AI"}
+        </AvatarFallback>
+      </Avatar>
+      <div
+        className={cn(
+          "max-w-[var(--chat-bubble-max-width,85%)] rounded-[var(--chat-bubble-radius)] px-3 py-2 text-sm border",
+          isUser ? "bg-[var(--chat-user-bg)] text-[var(--chat-user-text)] border-primary/20" : "bg-[var(--chat-assistant-bg)] text-[var(--chat-assistant-text)] border-[var(--glass-border)]"
+        )}
+      >
+        <p className="text-foreground">{content}</p>
+      </div>
+    </motion.div>
+  )
+}
+
+function ChatConversationItem({ id, title, isActive, onDelete }: { id: string; title: string; isActive?: boolean; onDelete?: (id: string) => void }) {
+  return (
+    <motion.div layout initial={{ opacity: 1 }} exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.2, ease: "easeOut" }}>
+      <div className={cn("group flex items-center gap-1 rounded-md px-2 py-1.5 text-sm", isActive ? "bg-accent/50 text-foreground" : "text-muted-foreground hover:bg-accent/30 hover:text-foreground")}>
+        <span className="flex-1 truncate">{title}</span>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-7 w-7 shrink-0 opacity-0 group-hover:opacity-100" aria-label="Options">
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-40">
+            <DropdownMenuItem className="text-destructive focus:bg-destructive/10 focus:text-destructive" onSelect={(e) => { e.preventDefault(); onDelete?.(id) }}>
+              <Trash2 className="mr-2 h-4 w-4" /> Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </motion.div>
+  )
+}
+
+export function ChatLayout({ onDeleteConversation }: { onDeleteConversation?: (id: string) => void }) {
+  const [conversations, setConversations] = useState([{ id: "1", title: "Summary doc" }, { id: "2", title: "Code review" }, { id: "3", title: "API design" }])
+  const [messages] = useState([
+    { id: "m1", role: "user" as const, content: "What's the best way to structure this API?" },
+    { id: "m2", role: "assistant" as const, content: "Consider REST with versioned routes and clear status codes. I can draft a spec." },
+  ])
+  const [activeId, setActiveId] = useState("1")
+  const handleDelete = (id: string) => {
+    setConversations((p) => p.filter((c) => c.id !== id))
+    if (activeId === id && conversations.length > 1) setActiveId(conversations.find((c) => c.id !== id)?.id ?? "")
+    onDeleteConversation?.(id)
+  }
   return (
     <div className="flex h-[420px] w-full max-w-4xl rounded-xl glass overflow-hidden">
       <aside className="w-56 glass border-0 border-r border-border p-3 flex flex-col gap-2">
-        <Button variant="ghost" size="sm" className="justify-start">
-          <Bot className="mr-2 h-4 w-4" /> New chat
-        </Button>
+        <Button variant="ghost" size="sm" className="justify-start"><Bot className="mr-2 h-4 w-4" /> New chat</Button>
         <ScrollArea className="flex-1">
-          {/* Conversation list */}
+          <div className="space-y-1">
+            <AnimatePresence mode="sync" initial={false}>
+              {conversations.map((conv) => (
+                <ChatConversationItem key={conv.id} id={conv.id} title={conv.title} isActive={activeId === conv.id} onDelete={handleDelete} />
+              ))}
+            </AnimatePresence>
+          </div>
         </ScrollArea>
       </aside>
       <main className="flex-1 flex flex-col min-w-0">
-        <ScrollArea className="flex-1 p-4 space-y-4">
-          {/* Messages */}
+        <ScrollArea className="flex-1 p-4">
+          <div className="space-y-4" style={{ gap: "var(--chat-message-gap)" }}>
+            <AnimatePresence mode="sync" initial={false}>
+              {messages.map((msg) => <ChatMessageRow key={msg.id} role={msg.role} content={msg.content} />)}
+            </AnimatePresence>
+          </div>
         </ScrollArea>
         <div className="p-3 border-t border-border">
           <div className="flex gap-2 rounded-lg glass p-2">
@@ -659,151 +736,140 @@ export function PromptAttachments({ attachments, onRemove, onAdd }: { attachment
     slug: "ai-chat-playground",
     name: "AI chat playground",
     description:
-      "Full-page-style layout: header with model selector, message list (user, AI, code block, error, typing), suggested prompts, and prompt bar with attachments.",
+      "Full-page layout: header with model selector and Clear chat, message list (user left / assistant right), code block, error, typing, suggested prompts, prompt bar with attachments. Uses --chat-* theme vars and micro-animations.",
     type: "page",
-    component: (
-      <div className="flex h-[520px] w-full max-w-4xl flex-col rounded-xl glass overflow-hidden">
-        <header className="flex items-center justify-between border-b border-border px-4 py-3">
-          <h2 className="font-semibold text-sm">AI Chat</h2>
-          <Select defaultValue="gpt-4">
-            <SelectTrigger className="w-[180px] h-9">
-              <SelectValue placeholder="Model" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="gpt-4">GPT-4</SelectItem>
-              <SelectItem value="claude">Claude</SelectItem>
-            </SelectContent>
-          </Select>
-        </header>
-        <ScrollArea className="flex-1 p-4 space-y-4">
-          <div className="flex gap-3">
-            <Avatar className="h-8 w-8 shrink-0">
-              <AvatarFallback className="text-xs">U</AvatarFallback>
-            </Avatar>
-            <div className="rounded-lg glass px-3 py-2 text-sm">Explain this code to me.</div>
-          </div>
-          <div className="flex gap-3">
-            <Avatar className="h-8 w-8 shrink-0 border border-primary/30">
-              <AvatarFallback className="bg-primary/20 text-primary text-xs">AI</AvatarFallback>
-            </Avatar>
-            <div className="rounded-lg glass px-3 py-2 text-sm">
-              Here’s a simple helper:
-            </div>
-          </div>
-          <div className="flex gap-3 max-w-md pl-11">
-            <div className="rounded-lg glass overflow-hidden flex-1">
-              <div className="flex items-center justify-between px-3 py-1.5 border-b border-border bg-muted/80">
-                <Badge variant="secondary" className="text-xs font-mono">ts</Badge>
-                <Button variant="ghost" size="sm" className="h-7 gap-1 text-xs">
-                  <Copy className="h-3 w-3" />
-                  Copy
-                </Button>
-              </div>
-              <pre className="p-3 text-sm font-mono overflow-x-auto">
-                <code>{`const greet = (name: string) => \`Hello, \${name}\`;`}</code>
-              </pre>
-            </div>
-          </div>
-          <div className="flex gap-3">
-            <Avatar className="h-8 w-8 shrink-0 border border-primary/30">
-              <AvatarFallback className="bg-primary/20 text-primary text-xs">AI</AvatarFallback>
-            </Avatar>
-            <Alert variant="destructive" className="flex-1 py-2">
-              <CircleAlert className="h-4 w-4" />
-              <AlertTitle className="text-sm">Error</AlertTitle>
-              <AlertDescription className="text-xs">Request failed. Retry?</AlertDescription>
-              <Button size="sm" variant="outline" className="mt-2 border-destructive/50 text-destructive hover:bg-destructive/10">
-                Retry
-              </Button>
-            </Alert>
-          </div>
-          <div className="flex gap-3">
-            <Avatar className="h-8 w-8 shrink-0 border border-primary/30">
-              <AvatarFallback className="bg-primary/20 text-primary text-xs">AI</AvatarFallback>
-            </Avatar>
-            <div className="rounded-lg glass px-3 py-2.5 flex gap-1">
-              <span className="flex gap-1">
-                <span className="h-2 w-2 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:0ms]" />
-                <span className="h-2 w-2 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:150ms]" />
-                <span className="h-2 w-2 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:300ms]" />
-              </span>
-            </div>
-          </div>
-        </ScrollArea>
-        <div className="space-y-2 p-3 border-t border-border">
-          <div className="flex flex-wrap gap-2">
-            <Button variant="outline" size="sm" className="rounded-full text-xs">
-              Summarize
-            </Button>
-            <Button variant="outline" size="sm" className="rounded-full text-xs">
-              Explain
-            </Button>
-            <Button variant="outline" size="sm" className="rounded-full text-xs">
-              Improve
-            </Button>
-          </div>
-          <div className="w-full rounded-xl glass p-2 shadow-sm space-y-2">
-            <div className="flex flex-wrap gap-1.5 px-1">
-              <span className="inline-flex items-center gap-1 rounded-md bg-muted/80 px-2 py-1 text-xs">
-                file.pdf
-                <Button type="button" variant="ghost" size="icon" className="h-5 w-5 shrink-0">
-                  <X className="h-3 w-3" />
-                  <span className="sr-only">Remove</span>
-                </Button>
-              </span>
-            </div>
-            <div className="flex gap-2">
-              <Textarea
-                placeholder="Ask anything..."
-                className="min-h-[44px] max-h-32 resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
-                rows={1}
-              />
-              <Button size="icon" className="shrink-0 h-10 w-10 rounded-lg">
-                <Send className="h-4 w-4" />
-                <span className="sr-only">Send</span>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    ),
-    code: `import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+    component: <AIChatPlayground />,
+    code: `"use client"
+
+import { useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
+import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Send, CircleAlert, Copy, X } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Send, CircleAlert, Copy, X, MoreVertical, Trash2 } from "lucide-react"
+import { cn } from "@/lib/utils"
 
-export function AIChatPlayground() {
+const msgTransition = { duration: 0.22, ease: "easeOut" }
+const msgVariants = { initial: { opacity: 0, y: 8 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -4 } }
+
+function ChatMessageRow({ role, content, className }: { role: "user" | "assistant"; content: string; className?: string }) {
+  const isUser = role === "user"
   return (
-    <div className="flex h-[520px] w-full max-w-4xl flex-col rounded-xl glass overflow-hidden">
+    <motion.div layout initial={msgVariants.initial} animate={msgVariants.animate} exit={msgVariants.exit} transition={msgTransition} className={cn("flex gap-3 w-full", isUser ? "justify-start" : "justify-end flex-row-reverse", className)}>
+      <Avatar className={cn("h-8 w-8 shrink-0 border", isUser ? "border-border" : "border-primary/30")}>
+        <AvatarFallback className={cn("text-xs", isUser ? "bg-muted text-muted-foreground" : "bg-primary/20 text-primary")}>{isUser ? "U" : "AI"}</AvatarFallback>
+      </Avatar>
+      <div className={cn("max-w-[var(--chat-bubble-max-width,85%)] rounded-[var(--chat-bubble-radius)] px-3 py-2 text-sm border", isUser ? "bg-[var(--chat-user-bg)] text-[var(--chat-user-text)] border-primary/20" : "bg-[var(--chat-assistant-bg)] text-[var(--chat-assistant-text)] border-[var(--glass-border)]")}>
+        <p className="text-foreground">{content}</p>
+      </div>
+    </motion.div>
+  )
+}
+
+export function AIChatPlayground({
+  onClearChat,
+  onRetry,
+  onDismiss,
+  suggestedPrompts = ["Summarize", "Explain", "Improve"],
+  onSelectPrompt,
+  attachments = [{ id: "a1", name: "file.pdf" }],
+  onRemoveAttachment,
+  onSend,
+  className,
+}: {
+  onClearChat?: () => void
+  onRetry?: () => void
+  onDismiss?: () => void
+  suggestedPrompts?: string[]
+  onSelectPrompt?: (p: string) => void
+  attachments?: { id: string; name: string }[]
+  onRemoveAttachment?: (id: string) => void
+  onSend?: (message: string) => void
+  className?: string
+}) {
+  const [messages, setMessages] = useState([{ id: "1", role: "user" as const, content: "Explain this code to me." }, { id: "2", role: "assistant" as const, content: "Here's a simple helper:" }])
+  const [showAssistantBlocks, setShowAssistantBlocks] = useState(true)
+  const [model, setModel] = useState("gpt-4")
+  const [inputValue, setInputValue] = useState("")
+  const sampleCode = "const greet = (name: string) => \`Hello, \${name}\`;"
+  const handleClear = () => { setMessages([]); setShowAssistantBlocks(false); onClearChat?.() }
+  const handleCopy = () => { void navigator.clipboard.writeText(sampleCode) }
+  const blockClass = "rounded-[var(--chat-bubble-radius)] border border-[var(--glass-border)] bg-[var(--chat-assistant-bg)] backdrop-blur-[var(--glass-blur)] max-w-[var(--chat-bubble-max-width,85%)]"
+  return (
+    <div className={cn("flex h-[520px] w-full max-w-4xl flex-col rounded-xl glass overflow-hidden", className)}>
       <header className="flex items-center justify-between border-b border-border px-4 py-3">
         <h2 className="font-semibold text-sm">AI Chat</h2>
-        <Select>
-          <SelectTrigger className="w-[180px] h-9"><SelectValue placeholder="Model" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="gpt-4">GPT-4</SelectItem>
-            <SelectItem value="claude">Claude</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex items-center gap-2">
+          <Select value={model} onValueChange={setModel}>
+            <SelectTrigger className="w-[180px] h-9" aria-label="Model"><SelectValue placeholder="Model" /></SelectTrigger>
+            <SelectContent><SelectItem value="gpt-4">GPT-4</SelectItem><SelectItem value="claude">Claude</SelectItem></SelectContent>
+          </Select>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-9 w-9 shrink-0" aria-label="Chat options"><MoreVertical className="h-4 w-4" /></Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-40">
+              <DropdownMenuItem className="text-destructive focus:bg-destructive/10 focus:text-destructive" onSelect={(e) => { e.preventDefault(); handleClear() }}><Trash2 className="mr-2 h-4 w-4" /> Clear chat</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </header>
-      <ScrollArea className="flex-1 p-4 space-y-4">
-        {/* Messages: user, AI, code block, error, typing indicator */}
+      <ScrollArea className="flex-1 p-4">
+        <div className="flex flex-col" style={{ gap: "var(--chat-message-gap)" }}>
+          <AnimatePresence mode="sync" initial={false}>
+            {messages.map((msg) => <ChatMessageRow key={msg.id} role={msg.role} content={msg.content} />)}
+            {showAssistantBlocks && (
+              <>
+                <motion.div key="code" layout initial={msgVariants.initial} animate={msgVariants.animate} exit={msgVariants.exit} transition={msgTransition} className="flex gap-3 w-full justify-end flex-row-reverse">
+                  <Avatar className="h-8 w-8 shrink-0 border border-primary/30"><AvatarFallback className="bg-primary/20 text-primary text-xs">AI</AvatarFallback></Avatar>
+                  <div className={cn(blockClass, "overflow-hidden flex-1 min-w-0")}>
+                    <div className="flex items-center justify-between px-3 py-1.5 border-b border-border bg-muted/80"><Badge variant="secondary" className="text-xs font-mono">ts</Badge><Button variant="ghost" size="sm" className="h-7 gap-1 text-xs" onClick={handleCopy}><Copy className="h-3 w-3" /> Copy</Button></div>
+                    <pre className="p-3 text-sm font-mono overflow-x-auto"><code className="text-foreground">{sampleCode}</code></pre>
+                  </div>
+                </motion.div>
+                <motion.div key="error" layout initial={msgVariants.initial} animate={msgVariants.animate} exit={msgVariants.exit} transition={msgTransition} className="flex gap-3 w-full justify-end flex-row-reverse">
+                  <Avatar className="h-8 w-8 shrink-0 border border-primary/30"><AvatarFallback className="bg-primary/20 text-primary text-xs">AI</AvatarFallback></Avatar>
+                  <div className="flex-1 min-w-0 max-w-[var(--chat-bubble-max-width,85%)]">
+                    <Alert variant="destructive" className="py-2">
+                      <CircleAlert className="h-4 w-4" /><AlertTitle className="text-sm">Error</AlertTitle><AlertDescription className="text-xs">Request failed. Retry?</AlertDescription>
+                      <div className="flex gap-2 mt-2">
+                        <Button size="sm" variant="outline" className="border-destructive/50 text-destructive hover:bg-destructive/10" onClick={onRetry}>Retry</Button>
+                        <Button size="sm" variant="ghost" onClick={onDismiss}>Dismiss</Button>
+                      </div>
+                    </Alert>
+                  </div>
+                </motion.div>
+                <motion.div key="typing" layout initial={msgVariants.initial} animate={msgVariants.animate} exit={msgVariants.exit} transition={msgTransition} className="flex gap-3 w-full justify-end flex-row-reverse">
+                  <Avatar className="h-8 w-8 shrink-0 border border-primary/30"><AvatarFallback className="bg-primary/20 text-primary text-xs">AI</AvatarFallback></Avatar>
+                  <div className={cn(blockClass, "px-3 py-2.5 flex gap-1")}><span className="flex gap-1"><span className="h-2 w-2 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:0ms]" /><span className="h-2 w-2 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:150ms]" /><span className="h-2 w-2 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:300ms]" /></span></div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+          {messages.length === 0 && !showAssistantBlocks && <p className="text-sm text-muted-foreground py-4 text-center">Send a message or pick a prompt below.</p>}
+        </div>
       </ScrollArea>
       <div className="space-y-2 p-3 border-t border-border">
         <div className="flex flex-wrap gap-2">
-          <Button variant="outline" size="sm" className="rounded-full text-xs">Summarize</Button>
-          <Button variant="outline" size="sm" className="rounded-full text-xs">Explain</Button>
-          <Button variant="outline" size="sm" className="rounded-full text-xs">Improve</Button>
+          {suggestedPrompts.map((p) => <Button key={p} variant="outline" size="sm" className="rounded-full text-xs" onClick={() => onSelectPrompt?.(p)}>{p}</Button>)}
         </div>
         <div className="w-full rounded-xl glass p-2 shadow-sm space-y-2">
-          <div className="flex flex-wrap gap-1.5 px-1">{/* Attachment chips */}</div>
+          <div className="flex flex-wrap gap-1.5 px-1">
+            {attachments.map((a) => (
+              <span key={a.id} className="inline-flex items-center gap-1 rounded-md bg-muted/80 px-2 py-1 text-xs">
+                {a.name}
+                <Button type="button" variant="ghost" size="icon" className="h-5 w-5 shrink-0" onClick={() => onRemoveAttachment?.(a.id)} aria-label={"Remove " + a.name}><X className="h-3 w-3" /><span className="sr-only">Remove</span></Button>
+              </span>
+            ))}
+          </div>
           <div className="flex gap-2">
-            <Textarea placeholder="Ask anything..." className="min-h-[44px] max-h-32 resize-none border-0 bg-transparent focus-visible:ring-0" rows={1} />
-            <Button size="icon" className="shrink-0 h-10 w-10 rounded-lg"><Send className="h-4 w-4" /><span className="sr-only">Send</span></Button>
+            <Textarea placeholder="Ask anything..." className="min-h-[44px] max-h-32 resize-none border-0 bg-transparent focus-visible:ring-0" rows={1} value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); if (inputValue.trim()) { onSend?.(inputValue.trim()); setInputValue("") } } }} />
+            <Button size="icon" className="shrink-0 h-10 w-10 rounded-lg" onClick={() => { if (inputValue.trim()) { onSend?.(inputValue.trim()); setInputValue("") } }} aria-label="Send message"><Send className="h-4 w-4" /><span className="sr-only">Send</span></Button>
           </div>
         </div>
       </div>

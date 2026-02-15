@@ -29,6 +29,15 @@ export const DESIGN_TOKENS_CSS = `/* Design system tokens – paste into your gl
   --glass-bg: hsl(230 25% 100% / 0.65);
   --glass-border: rgba(255, 255, 255, 0.35);
   --glass-blur: 12px;
+
+  /* Chat theming – plug-and-play */
+  --chat-user-bg: hsl(175 70% 42% / 0.15);
+  --chat-user-text: var(--foreground);
+  --chat-assistant-bg: var(--glass-bg);
+  --chat-assistant-text: var(--foreground);
+  --chat-bubble-radius: var(--radius);
+  --chat-message-gap: 0.75rem;
+  --chat-bubble-max-width: 85%;
 }
 
 .dark {
@@ -54,6 +63,10 @@ export const DESIGN_TOKENS_CSS = `/* Design system tokens – paste into your gl
   --glow-primary: hsla(175, 65%, 48%, 0.2);
   --glass-bg: hsl(230 40% 6% / 0.65);
   --glass-border: rgba(255, 255, 255, 0.1);
+
+  /* Chat theming */
+  --chat-user-bg: hsl(175 65% 48% / 0.2);
+  --chat-assistant-bg: var(--glass-bg);
 }
 
 /* Optional: glass utility used by many templates */

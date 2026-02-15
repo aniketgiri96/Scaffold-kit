@@ -5,6 +5,14 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2026-02-15
+
+### Minor change
+
+- **Chat layout UI:** User messages align right, assistant messages left. Sidebar conversation list includes a per-conversation delete (dropdown with "Delete"). Micro-animations (Framer Motion) for message enter and conversation remove. New `ChatMessageRow`, `ChatConversationItem`, and `ChatLayout` in `src/features/chat`; registry templates `chat-message-row` and `chat-layout` use them and ship copy-paste code with motion and dropdown.
+- **Chat theming (plug-and-play):** CSS variables `--chat-user-bg`, `--chat-user-text`, `--chat-assistant-bg`, `--chat-assistant-text`, `--chat-bubble-radius`, `--chat-message-gap`, `--chat-bubble-max-width` in `globals.css` and design tokens. Override in app CSS or a `[data-chat-theme]` wrapper to theme chat without changing components. Design tokens doc updated with a "Chat theming" subsection.
+- **AI chat playground:** Same enhancements as chat layout: user messages right, assistant left; header dropdown with "Clear chat"; Framer Motion micro-animations; `--chat-*` theme variables. New `AIChatPlayground` in `src/features/chat`; registry template and copy-paste code updated.
+
 ## [0.7.0] - 2026-02-14
 
 ### Minor change
