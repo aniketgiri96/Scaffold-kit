@@ -17,7 +17,7 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@templates": "https://scaffold-kit-zeta.vercel.app/api/registry/templates/{name}.json",
-    "@ml": "https://scaffold-kit-zeta.vercel.app/api/registry/ml/{name}.json"
+    "@templates": "https://www.techwithcare.in/api/registry/templates/{name}.json",
+    "@ml": "https://www.techwithcare.in/api/registry/ml/{name}.json"
   }
 }

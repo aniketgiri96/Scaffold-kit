@@ -6,7 +6,7 @@ const { spawnSync } = require("child_process");
 
 const REGISTRY_BASE =
   process.env.DSP_REGISTRY_BASE ||
-  "https://scaffold-kit-zeta.vercel.app/api/registry";
+  "https://www.techwithcare.in/api/registry";
 const COMPONENTS_JSON = "components.json";
 
 const defaultConfig = {
@@ -67,9 +67,19 @@ function main() {
   const subcommand = args[0];
   const passThrough = args.slice(1);
 
+  if (subcommand === "mcp") {
+    const mcpPath = path.join(__dirname, "mcp.mjs");
+    const result = spawnSync(process.execPath, [mcpPath], {
+      stdio: "inherit",
+      env: { ...process.env },
+      shell: false,
+    });
+    process.exit(result.status ?? 1);
+  }
+
   if (subcommand !== "add") {
     console.error(
-      'Usage: scaffold add <component> [options]\n  Example: scaffold add @ml/ml-model-performance-dashboard'
+      'Usage: scaffold add <component> [options]  |  scaffold mcp\n  Examples:\n    scaffold add @ml/ml-model-performance-dashboard\n    scaffold mcp  (run MCP server for IDE integration)'
     );
     process.exit(1);
   }
