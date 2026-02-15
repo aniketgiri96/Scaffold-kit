@@ -15,6 +15,7 @@ const CONTEXT_MARKDOWN = `# Design system context (for AI assistants)
 - For tool/agent UX: use \`tool-call-display\` for showing tool calls and results; \`agent-avatar-status\` for agent identity with status.
 - For code in responses: use \`chat-code-block\` (code + language + copy button).
 - For prompt input with attachments: use \`prompt-attachments\` instead of \`prompt-input-bar\`.
+- For ML dashboards and training/inference UI: use ML blocks from the manifest \`ml\` array (e.g. \`ml-model-performance-dashboard\`, \`training-loss-accuracy-curves\`, \`model-card\`, \`experiment-run-table\`). Install with \`npx ai-scaffold-kit add @ml/<slug>\`.
 - Design tokens: GET /api/tokens returns CSS variables; paste into globals so copied components look consistent.
 - No runtime dependency on this platform: copy code into the repo; you own it.
 `;
@@ -26,6 +27,7 @@ Use the design system catalog from this project's manifest. Prefer components an
 - Tool calls: use template tool-call-display. Agent identity: agent-avatar-status.
 - Code in messages: use template chat-code-block.
 - When suggesting a component, include the snippet from the manifest; prefer whenToUse and alternatives when choosing between similar blocks.
+- ML blocks: use the manifest \`ml\` array for dashboards, charts, model management, data, training, inference, LLM/NLP, etc. Install with \`npx ai-scaffold-kit add @ml/<slug>\` (e.g. @ml/ml-model-performance-dashboard, @ml/training-loss-accuracy-curves).
 - Design tokens: GET /api/tokens for CSS variables if styling must match.
 `;
 

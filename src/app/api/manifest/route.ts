@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { registry } from "@/registry";
 import { templatesRegistry } from "@/registry/templates";
 import { recipesRegistry } from "@/registry/recipes";
+import { mlRegistry } from "@/registry/ml-registry";
 import { componentManifestMeta, templateManifestMeta } from "@/registry/manifest-meta";
 
 export const dynamic = "force-dynamic";
@@ -71,12 +72,25 @@ export async function GET(request: NextRequest) {
     layoutHint: entry.layoutHint,
   }));
 
+  const ml = Object.entries(mlRegistry).map(([slug, entry]) => ({
+    slug,
+    name: entry.name,
+    description: entry.description,
+    type: entry.type,
+    category: entry.category,
+    code: entry.code,
+    ...(entry.examples?.length && {
+      examples: entry.examples.map((ex) => ({ title: ex.title, code: ex.code })),
+    }),
+  }));
+
   const payload = {
     version: MANIFEST_VERSION,
     ...(requestedVersion && { requestedVersion }),
     components,
     templates,
     recipes,
+    ml,
   };
 
   return NextResponse.json(payload, {
