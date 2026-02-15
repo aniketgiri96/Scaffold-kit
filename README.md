@@ -129,7 +129,7 @@ You can use the design system from **any MCP-capable IDE** (Cursor, Claude Deskt
 - **Claude Desktop:** MCP server config in the app’s config directory (see Claude Desktop docs for your OS).
 - **Windsurf / Continue / others:** Use the same `command`, `args`, and `env` in your IDE’s MCP settings (each IDE documents its config path).
 
-See [For AI developers](/docs/for-ai-developers) for more detail and copy-paste snippets.
+See [MCP-SETUP.md](MCP-SETUP.md) for a full checklist (runtime, dependencies, IDE config) and [For AI developers](/docs/for-ai-developers) for more detail and copy-paste snippets. Example config: `.cursor/mcp.json.example`.
 
 ## Docs
 
