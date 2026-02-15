@@ -33,6 +33,15 @@ export default function DocsPage() {
             </Link>{" "}
             for the full list.
           </li>
+          <li>
+            <strong className="text-foreground">ML Components</strong> — Dashboards,
+            charts, model management, data, training, inference, and more for ML
+            platforms. Install with <code className="rounded bg-muted px-1 py-0.5 font-mono text-sm">npx ai-scaffold-kit add @ml/&lt;slug&gt;</code>. See{" "}
+            <Link href="/ml" className="text-primary underline hover:no-underline">
+              ML Components
+            </Link>{" "}
+            for the full list.
+          </li>
         </ul>
       </section>
 

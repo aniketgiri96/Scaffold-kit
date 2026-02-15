@@ -9,7 +9,7 @@ export default function ForAiDevelopersPage() {
         </h1>
         <p className="mt-2 text-lg text-muted-foreground">
           Use this UI kit with Cursor, Copilot, or any AI coding assistant:
-          discover components and templates, then copy production-ready code.
+          discover components, templates, and ML blocks, then copy production-ready code.
         </p>
         <p className="mt-2 text-muted-foreground">
           <strong className="text-foreground">Zero dependency.</strong> Copy code into your repo—no
@@ -23,13 +23,17 @@ export default function ForAiDevelopersPage() {
         </h2>
         <ol className="list-decimal space-y-2 pl-6 text-muted-foreground">
           <li>
-            Open a component or template page (e.g.{" "}
+            Open a component, template, or ML block page (e.g.{" "}
             <Link href="/components/button" className="text-primary underline hover:no-underline">
               Components → Button
             </Link>
             ,{" "}
             <Link href="/templates/prompt-input-bar" className="text-primary underline hover:no-underline">
               Templates → Prompt input bar
+            </Link>
+            ,{" "}
+            <Link href="/ml/ml-model-performance-dashboard" className="text-primary underline hover:no-underline">
+              ML → ML Model Performance Dashboard
             </Link>
             ).
           </li>
@@ -50,7 +54,7 @@ export default function ForAiDevelopersPage() {
         </h2>
         <p className="text-muted-foreground">
           <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">GET /api/manifest</code> returns a
-          JSON catalog of all components and templates for use by AI tools. The
+          JSON catalog of all components, templates, ML blocks, and recipes for use by AI tools. The
           response includes:
         </p>
         <ul className="list-disc space-y-1 pl-6 text-muted-foreground">
@@ -62,6 +66,10 @@ export default function ForAiDevelopersPage() {
           <li>
             <strong className="text-foreground">templates</strong> — slug, name,
             description, type (block or page), code, optional examples, and when present patternCategory (e.g. Streaming, Tool use).
+          </li>
+          <li>
+            <strong className="text-foreground">ml</strong> — ML blocks (slug, name, description, type, category, code, optional examples). Use for dashboards, charts, model management, training, inference, etc. Install with <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">npx ai-scaffold-kit add @ml/&lt;slug&gt;</code>; see{" "}
+            <Link href="/ml" className="text-primary underline hover:no-underline">ML Components</Link> for the list.
           </li>
           <li>
             <strong className="text-foreground">recipes</strong> — slug, name, description, blockSlugs (ordered), layoutHint. Use for full-screen flows; <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">GET /api/recipes/&lt;slug&gt;</code> returns blocks with code for each.
@@ -99,7 +107,7 @@ export default function ForAiDevelopersPage() {
           MCP server (all IDEs)
         </h2>
         <p className="text-muted-foreground">
-          Use the design system from <strong className="text-foreground">any MCP-capable IDE</strong> (Cursor, Claude Desktop, Windsurf, Continue, etc.) by adding the Scaffold-kit MCP server. The server exposes tools: <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_manifest</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_component</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_template</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_context</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_tokens</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">list_recipes</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_recipe</code>.
+          Use the design system from <strong className="text-foreground">any MCP-capable IDE</strong> (Cursor, Claude Desktop, Windsurf, Continue, etc.) by adding the Scaffold-kit MCP server. The server exposes tools: <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_manifest</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_component</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_template</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_context</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_tokens</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">list_recipes</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">get_recipe</code>, <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">list_ml</code>.
         </p>
         <p className="text-muted-foreground">
           Run: <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">npx ai-scaffold-kit mcp</code>. Configure your IDE to spawn this with stdio using the same <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">command</code> / <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">args</code> / <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">env</code> below (config file location is IDE-specific).

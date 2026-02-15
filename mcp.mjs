@@ -337,6 +337,28 @@ server.registerTool(
   }
 );
 
+server.registerTool(
+  "list_ml",
+  {
+    title: "List ML blocks",
+    description:
+      "Lists all ML blocks (dashboards, charts, model management, training, inference, etc.) from the manifest. Use get_component with an ML slug (e.g. ml-model-performance-dashboard) to fetch code.",
+    inputSchema: {},
+  },
+  async () => {
+    const data = await fetchJson("/api/manifest");
+    const ml = data.ml ?? [];
+    return {
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify(ml, null, 2),
+        },
+      ],
+    };
+  }
+);
+
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
