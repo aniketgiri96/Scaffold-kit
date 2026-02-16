@@ -140,8 +140,9 @@ export function TextToSpeechTemplate({
       animate={rootVariants.animate}
       transition={rootTransition}
       className={cn(
-        "flex h-[600px] w-full max-w-5xl flex-col rounded-xl overflow-hidden shadow-lg border border-border",
+        "flex w-full max-w-5xl flex-col rounded-xl overflow-hidden shadow-lg border border-border",
         "bg-gradient-to-b from-background to-muted/20",
+        "min-h-[400px] h-[100dvh] md:h-[600px] md:min-h-0 mx-auto",
         className
       )}
     >
@@ -150,37 +151,36 @@ export function TextToSpeechTemplate({
         initial="initial"
         animate="animate"
         variants={headerVariants}
-        className="flex items-center justify-between border-b border-border px-4 py-3 shrink-0"
+        className="flex items-center justify-between border-b border-border px-2 py-1.5 sm:px-4 sm:py-3 shrink-0"
       >
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/20">
-            <Volume2 className="h-4 w-4 text-primary" />
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-md bg-primary/20 shrink-0">
+            <Volume2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
           </div>
-          <h1 className="font-semibold text-base">Text to Speech</h1>
+          <h1 className="font-semibold text-sm sm:text-base truncate">Text to Speech</h1>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground" aria-label="Notifications">
+        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+          <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9 text-muted-foreground" aria-label="Notifications">
             <Bell className="h-4 w-4" />
           </Button>
-          <Avatar className="h-8 w-8 border border-border">
+          <Avatar className="h-7 w-7 sm:h-8 sm:w-8 border border-border">
             <AvatarFallback className="text-xs bg-muted text-muted-foreground">U</AvatarFallback>
           </Avatar>
         </div>
       </motion.header>
 
-      {/* Main */}
-      <div className="flex flex-1 min-h-0 overflow-hidden">
-        {/* Left: text input + suggestions — no scroll, flex layout fits height */}
+      {/* Main: stack on mobile, row on md+ */}
+      <div className="flex flex-1 min-h-0 overflow-hidden flex-col md:flex-row">
         <motion.div
           initial="initial"
           animate="animate"
           variants={mainLeftVariants}
-          className="flex flex-1 flex-col min-w-0 min-h-0 p-4 gap-3 overflow-hidden"
+          className="flex flex-1 flex-col min-w-0 min-h-0 p-2 sm:p-4 gap-2 sm:gap-3 overflow-hidden"
         >
-          <div className="flex-1 min-h-0 flex flex-col">
+          <div className="flex-1 min-h-[120px] flex flex-col">
             <Textarea
               placeholder="Start typing here or paste any text you want to turn into lifelike speech..."
-              className="h-full min-h-[100px] resize-none rounded-lg border border-border bg-muted/20 bg-gradient-to-b from-muted/10 to-muted/20 text-foreground placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2"
+              className="h-full min-h-[80px] sm:min-h-[100px] resize-none rounded-lg border border-border bg-muted/20 bg-gradient-to-b from-muted/10 to-muted/20 text-foreground placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2 text-sm sm:text-base"
               value={displayValue}
               onChange={(e) => {
                 setHoveredSuggestion(null);
@@ -189,10 +189,10 @@ export function TextToSpeechTemplate({
               onFocus={() => setHoveredSuggestion(null)}
             />
           </div>
-          <div className="shrink-0 space-y-1.5">
-            <p className="text-sm font-medium text-muted-foreground">Get started with</p>
+          <div className="shrink-0 space-y-1 sm:space-y-1.5">
+            <p className="text-xs sm:text-sm font-medium text-muted-foreground">Get started with</p>
             <motion.div
-              className="flex flex-wrap gap-2"
+              className="flex flex-wrap gap-1.5 sm:gap-2 max-h-[88px] sm:max-h-none overflow-y-auto overflow-x-hidden"
               variants={suggestionContainerVariants}
               initial="initial"
               animate="animate"
@@ -202,13 +202,13 @@ export function TextToSpeechTemplate({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="rounded-full gap-1.5 text-muted-foreground hover:text-foreground transition-colors"
+                    className="rounded-full gap-1 sm:gap-1.5 text-muted-foreground hover:text-foreground transition-colors text-xs sm:text-sm h-8 sm:h-9 px-2.5 sm:px-3"
                     onClick={() => handleSuggestionClick(label)}
                     onMouseEnter={() => setHoveredSuggestion(label)}
                     onMouseLeave={() => setHoveredSuggestion(null)}
                   >
-                    <Icon className="h-3.5 w-3.5" />
-                    {label}
+                    <Icon className="h-3 w-3 sm:h-3.5 sm:w-3.5 shrink-0" />
+                    <span className="truncate max-w-[140px] sm:max-w-none">{label}</span>
                   </Button>
                 </motion.div>
               ))}
@@ -216,21 +216,21 @@ export function TextToSpeechTemplate({
           </div>
         </motion.div>
 
-        {/* Right: Settings sidebar — exact height, no scroll */}
+        {/* Right: Settings sidebar — full width when stacked on mobile */}
         <motion.aside
           initial="initial"
           animate="animate"
           variants={sidebarVariants}
-          className="w-[280px] h-full shrink-0 border-l border-border flex flex-col overflow-hidden bg-gradient-to-b from-muted/10 to-muted/30"
+          className="w-full md:w-[280px] md:min-w-[280px] md:h-full shrink-0 border-t md:border-t-0 md:border-l border-border flex flex-col overflow-hidden bg-gradient-to-b from-muted/10 to-muted/30 max-h-[240px] md:max-h-none"
         >
           <Tabs defaultValue="settings" className="flex flex-col flex-1 min-h-0 overflow-hidden">
-            <div className="shrink-0 px-3 pt-3  border-border">
-              <TabsList className="w-full grid grid-cols-2 h-9">
+            <div className="shrink-0 px-2 sm:px-3 pt-1.5 sm:pt-3 pb-0 border-border">
+              <TabsList className="w-full grid grid-cols-2 h-8 sm:h-9">
                 <TabsTrigger value="settings" className="text-xs">Settings</TabsTrigger>
                 <TabsTrigger value="history" className="text-xs">History</TabsTrigger>
               </TabsList>
             </div>
-            <TabsContent value="settings" className="m-0 p-2 flex-1 min-h-0 overflow-hidden flex flex-col gap-2">
+            <TabsContent value="settings" className="m-0 p-1.5 sm:p-2 flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col gap-2">
                 <AnimatePresence>
                   {!promoDismissed && (
                     <motion.div
@@ -322,7 +322,7 @@ export function TextToSpeechTemplate({
                   </div>
                 </div>
               </TabsContent>
-              <TabsContent value="history" className="m-0 p-2 flex-1 min-h-0 overflow-hidden flex items-center justify-center">
+              <TabsContent value="history" className="m-0 p-1.5 sm:p-2 flex-1 min-h-0 overflow-hidden flex items-center justify-center">
                 <p className="text-sm text-muted-foreground text-center">No history yet.</p>
               </TabsContent>
           </Tabs>
@@ -334,34 +334,34 @@ export function TextToSpeechTemplate({
         initial="initial"
         animate="animate"
         variants={footerVariants}
-        className="flex items-center gap-4 border-t border-border px-4 py-3 shrink-0 bg-gradient-to-r from-muted/20 via-muted/30 to-muted/20"
+        className="flex items-center gap-2 sm:gap-4 border-t border-border px-2 py-1.5 sm:px-4 sm:py-3 shrink-0 bg-gradient-to-r from-muted/20 via-muted/30 to-muted/20"
       >
-        <div className="min-w-0 shrink">
-          <p className="text-sm font-medium truncate">Default voice</p>
-          <p className="text-xs text-muted-foreground">Preview</p>
+        <div className="min-w-0 shrink hidden sm:block w-20 md:w-auto">
+          <p className="text-xs sm:text-sm font-medium truncate">Default voice</p>
+          <p className="text-[10px] sm:text-xs text-muted-foreground truncate">Preview</p>
         </div>
         <div className="flex flex-1 flex-col items-center gap-1 min-w-0">
-          <div className="flex items-center gap-2 w-full max-w-md">
-            <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={handleRewind} aria-label="Rewind 10s">
-              <SkipBack className="h-4 w-4" />
+          <div className="flex items-center gap-1.5 sm:gap-2 w-full max-w-md justify-center">
+            <Button variant="ghost" size="icon" className="h-7 w-7 sm:h-8 sm:w-8 shrink-0" onClick={handleRewind} aria-label="Rewind 10s">
+              <SkipBack className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </Button>
             <motion.div
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.96 }}
               transition={{ duration: 0.2 }}
             >
-              <Button variant="ghost" size="icon" className="h-10 w-10 shrink-0 rounded-full bg-primary/20 hover:bg-primary/30" onClick={handlePlayPause} aria-label={playing ? "Pause" : "Play"}>
-                {playing ? <Pause className="h-5 w-5 text-primary" /> : <Play className="h-5 w-5 text-primary ml-0.5" />}
+              <Button variant="ghost" size="icon" className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 rounded-full bg-primary/20 hover:bg-primary/30" onClick={handlePlayPause} aria-label={playing ? "Pause" : "Play"}>
+                {playing ? <Pause className="h-4 w-4 sm:h-5 sm:w-5 text-primary" /> : <Play className="h-4 w-4 sm:h-5 sm:w-5 text-primary ml-0.5" />}
               </Button>
             </motion.div>
-            <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={handleForward} aria-label="Forward 10s">
-              <SkipForward className="h-4 w-4" />
+            <Button variant="ghost" size="icon" className="h-7 w-7 sm:h-8 sm:w-8 shrink-0" onClick={handleForward} aria-label="Forward 10s">
+              <SkipForward className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </Button>
           </div>
-          <div className="flex items-center gap-2 w-full max-w-md">
-            <span className="text-xs text-muted-foreground tabular-nums w-8">{formatTime(currentTime)}</span>
+          <div className="flex items-center gap-1.5 sm:gap-2 w-full max-w-md">
+            <span className="text-[10px] sm:text-xs text-muted-foreground tabular-nums w-6 sm:w-8">{formatTime(currentTime)}</span>
             <motion.div
-              className="flex-1 rounded-full overflow-hidden"
+              className="flex-1 rounded-full overflow-hidden min-w-0"
               animate={{
                 boxShadow: playing ? "0 0 12px hsl(var(--primary) / 0.25)" : "0 0 0 transparent",
               }}
@@ -369,17 +369,17 @@ export function TextToSpeechTemplate({
             >
               <Progress value={progressPercent} className="h-1.5" />
             </motion.div>
-            <span className="text-xs text-muted-foreground tabular-nums w-8">{formatTime(duration)}</span>
+            <span className="text-[10px] sm:text-xs text-muted-foreground tabular-nums w-6 sm:w-8">{formatTime(duration)}</span>
           </div>
         </div>
-        <div className="flex items-center gap-1 shrink-0">
-          <Button variant="ghost" size="icon" className="h-9 w-9" aria-label="Download">
-            <Download className="h-4 w-4" />
+        <div className="flex items-center gap-0.5 sm:gap-1 shrink-0">
+          <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9" aria-label="Download">
+            <Download className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-9 w-9" aria-label="More options">
-                <MoreVertical className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9" aria-label="More options">
+                <MoreVertical className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

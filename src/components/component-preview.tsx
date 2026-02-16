@@ -66,7 +66,7 @@ export function ComponentPreview({
       <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
       <div
         className={cn(
-          "relative preview flex min-h-[350px] w-full justify-center p-10 z-10",
+          "relative preview flex min-h-[350px] w-full justify-center p-3 sm:p-6 md:p-10 z-10",
           {
             "items-center": align === "center",
             "items-start": align === "start",
@@ -136,7 +136,7 @@ export function ComponentPreview({
                 <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
                 <div
                   className={cn(
-                    "relative preview flex min-h-[350px] w-full justify-center p-10 z-10",
+                    "relative preview flex min-h-[350px] w-full justify-center p-3 sm:p-6 md:p-10 z-10",
                     {
                       "items-center": align === "center",
                       "items-start": align === "start",
