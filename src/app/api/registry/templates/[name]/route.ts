@@ -27,10 +27,14 @@ export async function GET(
     "alert",
     "skeleton",
     "select",
+    "slider",
+    "tabs",
+    "progress",
+    "dropdown-menu",
   ];
 
-  /** npm packages used in templates (lucide-react); CLI runs package-manager install. */
-  const dependencies = ["lucide-react"];
+  /** npm packages used in templates (lucide-react, framer-motion); CLI runs package-manager install. */
+  const dependencies = ["lucide-react", "framer-motion"];
 
   const registryItem = {
     $schema: "https://ui.shadcn.com/schema/registry-item.json",
