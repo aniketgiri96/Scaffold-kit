@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Send, Bot, Sparkles, CircleAlert, Copy, X } from "lucide-react";
 import { ChatMessageRow, ChatLayout, AIChatPlayground } from "@/features/chat";
-import { TextToSpeechTemplate } from "@/features/tts";
+import { TextToSpeechTemplate, VoicePromptWithBubble } from "@/features/tts";
 import { SpeechToTextTemplate } from "@/features/stt";
 
 export type TemplateType = "block" | "page";
@@ -131,6 +131,90 @@ export function PromptInputBar() {
         <Send className="h-4 w-4" />
         <span className="sr-only">Send</span>
       </Button>
+    </div>
+  )
+}
+`,
+  },
+  "voice-prompt-with-bubble": {
+    slug: "voice-prompt-with-bubble",
+    name: "Voice prompt with bubble",
+    description:
+      "Clean, minimal voice prompt: iridescent bubble that shrinks on input focus with revealed helper text. No branding.",
+    type: "page",
+    component: (
+      <div className="flex h-[520px] w-full max-w-2xl mx-auto flex-col rounded-xl overflow-hidden shadow-lg border border-border bg-gradient-to-b from-background to-muted/20">
+        <div className="flex flex-1 flex-col items-center justify-center min-h-0 p-6 sm:p-8">
+          <VoicePromptWithBubble className="w-full flex-1 justify-center" />
+        </div>
+      </div>
+    ),
+    code: `"use client"
+
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Input } from "@/components/ui/input"
+import { Phone } from "lucide-react"
+import { cn } from "@/lib/utils"
+
+export function VoicePromptWithBubble({
+  className,
+  placeholder = "Or type a message...",
+  revealedText = "Add it to the template — similar to Text to Speech.",
+  onFocusChange,
+}: {
+  className?: string
+  placeholder?: string
+  revealedText?: string
+  onFocusChange?: (focused: boolean) => void
+}) {
+  const [inputFocused, setInputFocused] = useState(false)
+  const [value, setValue] = useState("")
+
+  const handleFocus = () => { setInputFocused(true); onFocusChange?.(true) }
+  const handleBlur = () => { setInputFocused(false); onFocusChange?.(false) }
+
+  return (
+    <div className={cn("flex flex-col items-center gap-6 min-h-[200px]", className)}>
+      <motion.div
+        className="relative flex-shrink-0 rounded-full"
+        animate={{ width: inputFocused ? 56 : 240, height: inputFocused ? 56 : 240 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+      >
+        <div
+          className="absolute inset-0 rounded-full w-full h-full border border-white/20"
+          style={{
+            background: "radial-gradient(ellipse 80% 80% at 50% 50%, rgba(120,200,255,0.35), transparent 50%), radial-gradient(ellipse 60% 60% at 50% 50%, rgba(100,220,200,0.4), transparent 45%)",
+            boxShadow: "0 0 60px rgba(100,180,220,0.2), inset 0 0 40px rgba(255,255,255,0.08)",
+          }}
+        />
+      </motion.div>
+      <AnimatePresence>
+        {inputFocused && (
+          <motion.p
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="text-sm text-muted-foreground text-center max-w-md"
+          >
+            {revealedText}
+          </motion.p>
+        )}
+      </AnimatePresence>
+      <div className="w-full flex items-center gap-2 rounded-xl border border-border bg-muted/20 px-3 py-2 focus-within:border-primary/40 focus-within:ring-2 focus-within:ring-primary/20">
+        <button type="button" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground" aria-label="Voice input">
+          <Phone className="h-4 w-4" />
+        </button>
+        <Input
+          placeholder={placeholder}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          className="flex-1 border-0 bg-transparent focus-visible:ring-0"
+        />
+      </div>
     </div>
   )
 }
