@@ -13,15 +13,8 @@ export interface TemplateEntry {
   type: TemplateType;
 }
 
-interface ByPatternSection {
-  patternCategory: string;
-  type: TemplateType;
-  entries: TemplateEntry[];
-}
-
 interface TemplatesGridProps {
   byType: { type: TemplateType; entries: TemplateEntry[] }[];
-  byPattern?: ByPatternSection[];
 }
 
 const typeLabels: Record<TemplateType, string> = {
@@ -84,33 +77,8 @@ function TemplateCard({
   );
 }
 
-export function TemplatesGrid({ byType, byPattern }: TemplatesGridProps) {
+export function TemplatesGrid({ byType }: TemplatesGridProps) {
   let globalIndex = 0;
-
-  if (byPattern && byPattern.length > 0) {
-    return (
-      <div className="space-y-8">
-        <h2 className="font-display text-xl font-semibold tracking-tight">By AI pattern</h2>
-        {byPattern.map(({ patternCategory, type, entries }) => (
-          <section key={`${patternCategory}-${type}`}>
-            <h3 className="font-display mb-4 text-lg font-medium tracking-tight text-muted-foreground">
-              {patternCategory} — {typeLabels[type]}
-            </h3>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {entries.map((entry) => (
-                <TemplateCard
-                  key={entry.slug}
-                  {...entry}
-                  patternCategory={patternCategory}
-                  index={globalIndex++}
-                />
-              ))}
-            </div>
-          </section>
-        ))}
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-8">
