@@ -51,7 +51,7 @@ export const templatesRegistry: Record<string, TemplateEntry> = {
     ),
     code: `"use client"
 
-import { motion } from "framer-motion"
+import { motion } from "motion/react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 
@@ -152,7 +152,7 @@ export function PromptInputBar() {
     code: `"use client"
 
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence } from "motion/react"
 import { Input } from "@/components/ui/input"
 import { Phone } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -316,7 +316,7 @@ export function AgentAvatarStatus({ status = "live", label = "Assistant" }) {
     code: `"use client"
 
 import { useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion } from "motion/react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -828,7 +828,7 @@ export function PromptAttachments({ attachments, onRemove, onAdd }: { attachment
     code: `"use client"
 
 import { useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion } from "motion/react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -974,7 +974,7 @@ export function AIChatPlayground({
     code: `"use client"
 
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence } from "motion/react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
@@ -1226,7 +1226,7 @@ export function TextToSpeechTemplate({ onSuggestionSelect, className }: { onSugg
     code: `"use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence } from "motion/react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"

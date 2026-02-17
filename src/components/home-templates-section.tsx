@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { templatesRegistry } from "@/registry/templates";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { slugifyCategory } from "@/lib/utils";
 
@@ -31,7 +31,7 @@ export function ComponentsGrid({ byCategory }: ComponentsGridProps) {
   return (
     <div className="space-y-8">
       {byCategory.map(({ category, entries }) => (
-        <section key={category} id={slugifyCategory(category)}>
+        <section key={category} id={category === "Voice" ? "eleven-labs" : slugifyCategory(category)}>
           <h2 className="font-display mb-4 text-xl font-semibold tracking-tight">{category}</h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {entries.map(({ slug, name, description }) => {

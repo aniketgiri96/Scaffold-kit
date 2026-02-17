@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 export const defaultViewport = { once: true, margin: "-40px 0px -40px 0px" };
 export const defaultTransition = { type: "spring" as const, stiffness: 300, damping: 30 };
