@@ -15,10 +15,10 @@ import { Textarea } from "@/components/ui/textarea"
 
 async function getToken() {
   const result = await getScribeToken()
-  if (result.error) {
+  if ("error" in result) {
     throw new Error(result.error)
   }
-  return result.token!
+  return result.token
 }
 
 function TextareaWithSpeechInputRight() {

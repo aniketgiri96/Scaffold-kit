@@ -2423,8 +2423,8 @@ import { Textarea } from "@/components/ui/textarea"
 
 async function getToken() {
   const result = await getScribeToken()
-  if (result.error) throw new Error(result.error)
-  return result.token!
+  if ("error" in result) throw new Error(result.error)
+  return result.token
 }
 
 function TextareaWithSpeechInputRight() {

@@ -25,6 +25,7 @@
     "ui:add": "shadcn@latest add"
   },
   "dependencies": {
+    "@elevenlabs/client": "0.14.0",
     "@elevenlabs/react": "^0.14.0",
     "@hookform/resolvers": "^5.2.2",
     "@modelcontextprotocol/sdk": "^1.26.0",
