@@ -51,7 +51,7 @@ export function HomeTemplatesSection() {
             >
               <Link href={`/templates/${slug}`}>
                 <motion.div
-                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                 
                   className="h-full"
                 >
                   <Card className="group relative overflow-hidden transition-all hover:bg-accent/50 hover:border-primary/30 hover:shadow-[0_0_20px_var(--glow-primary)] h-full">
@@ -72,7 +72,7 @@ export function HomeTemplatesSection() {
         <div className="text-center">
           <Link
             href="/templates"
-            className="text-sm font-medium text-primary hover:underline"
+            className="text-sm font-medium text-primary hover:underline hover:underline-offset-4 duration-300 ease-in-out"
           >
             View all templates →
           </Link>

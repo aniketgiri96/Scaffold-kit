@@ -236,6 +236,11 @@
     backdrop-filter: blur(var(--glass-blur));
   }
 
+  /* Input focus glow – custom utility to avoid Tailwind generating invalid var(--glow-primary/50) */
+  .input-focus-glow:focus-visible {
+    box-shadow: 0 0 0 3px var(--glow-primary);
+  }
+
   /* Hide scrollbars everywhere; scrolling still works */
   * {
     scrollbar-width: none;

@@ -109,7 +109,7 @@ export function ComponentPreview({
     >
       <Tabs value={tab} onValueChange={setTab} className="relative mr-auto w-full">
         <div className="flex items-center justify-between pb-3">
-          <TabsList className="w-full justify-start rounded-lg border-b bg-transparent p-0">
+          <TabsList className="w-max justify-start rounded-lg border-b bg-transparent p-0">
             <TabsTrigger
               value="preview"
               className="relative h-9 rounded-md border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 font-semibold text-muted-foreground shadow-none transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground data-[state=active]:shadow-none"
@@ -130,7 +130,7 @@ export function ComponentPreview({
               <motion.div
                 key="preview"
                 {...tabContentMotion}
-                className="relative border border-border bg-card/80 backdrop-blur-xl overflow-hidden shadow-sm ring-1 ring-white/5 dark:ring-white/10 hover:border-primary/20 hover:shadow-[0_0_24px_var(--glow-primary)] transition-all duration-300"
+                className="relative border border-border bg-card/80 backdrop-blur-xl overflow-hidden shadow-sm ring-1 ring-white/5 dark:ring-white/10  transition-all duration-300"
                 style={{ borderRadius: "1.25rem" }}
               >
                 <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />

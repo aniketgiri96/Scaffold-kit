@@ -48,7 +48,7 @@ function TemplateCard({
     >
       <Link href={`/templates/${slug}`}>
         <motion.div
-          whileHover={{ y: -4, transition: { duration: 0.2 } }}
+         // whileHover={{ y: -4, transition: { duration: 0.2 } }}
           className="h-full"
         >
           <Card className="group relative overflow-hidden transition-all hover:bg-accent/50 hover:border-primary/30 hover:shadow-[0_0_20px var(--glow-primary)] h-full">

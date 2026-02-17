@@ -1,0 +1,6 @@
+{"location":"voice-prompt-with-bubble.tsx:handleFocus","message":"input focused, revealedText slot will mount","data":{"inputFocused":true},"hypothesisId":"H1","timestamp":1771299793511}
+{"location":"voice-prompt-with-bubble.tsx:handleBlur","message":"input blurred, revealedText slot will unmount (layout shift moment)","data":{"inputFocused":false},"hypothesisId":"H1","timestamp":1771299797490}
+{"location":"voice-prompt-with-bubble.tsx:handleFocus","message":"input focused, revealedText slot will mount","data":{"inputFocused":true},"hypothesisId":"H1","timestamp":1771299800047}
+{"location":"voice-prompt-with-bubble.tsx:handleBlur","message":"input blurred, revealedText slot will unmount (layout shift moment)","data":{"inputFocused":false},"hypothesisId":"H1","timestamp":1771299801012}
+{"location":"voice-prompt-with-bubble.tsx:handleFocus","message":"input focused, revealedText slot will mount","data":{"inputFocused":true},"hypothesisId":"H1","timestamp":1771299802391}
+{"location":"voice-prompt-with-bubble.tsx:handleBlur","message":"input blurred, revealedText slot will unmount (layout shift moment)","data":{"inputFocused":false},"hypothesisId":"H1","timestamp":1771299803426}
