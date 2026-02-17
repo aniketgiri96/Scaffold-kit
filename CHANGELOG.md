@@ -5,6 +5,12 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-02-17
+
+### Minor change
+
+- **ElevenLabs UI components in Components section:** Added 13 ElevenLabs UI components to the Components section (Voice category): bar-visualizer, conversation, live-waveform, message, mic-selector, orb, response, shimmering-text, speech-input, transcript-viewer, voice-button, voice-picker, waveform. Each has a demo wrapper, registry entry, and install command `pnpm dlx @elevenlabs/cli@latest components add <slug>` on the component detail page.
+
 ## [0.8.0] - 2026-02-15
 
 ### Minor change

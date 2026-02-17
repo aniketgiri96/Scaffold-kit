@@ -30,6 +30,7 @@ const defaultConfig = {
   registries: {
     "@templates": `${REGISTRY_BASE}/templates/{name}.json`,
     "@ml": `${REGISTRY_BASE}/ml/{name}.json`,
+    "@voice": `${REGISTRY_BASE}/voice/{name}.json`,
   },
 };
 
@@ -58,6 +59,7 @@ function ensureComponentsJson(cwd) {
   config.registries = config.registries || {};
   config.registries["@templates"] = `${REGISTRY_BASE}/templates/{name}.json`;
   config.registries["@ml"] = `${REGISTRY_BASE}/ml/{name}.json`;
+  config.registries["@voice"] = `${REGISTRY_BASE}/voice/{name}.json`;
 
   fs.writeFileSync(filePath, JSON.stringify(config, null, 2), "utf8");
 }

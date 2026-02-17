@@ -2,6 +2,7 @@ import { registry, type ComponentCategory } from "@/registry";
 import { ComponentsGrid } from "@/components/components-grid";
 
 const CATEGORY_ORDER: ComponentCategory[] = [
+  "Voice",
   "Forms",
   "Data display",
   "Layout",
@@ -24,6 +25,9 @@ export default function ComponentsPage() {
         <h1 className="font-display text-3xl font-bold tracking-tight">Components</h1>
         <p className="text-lg text-muted-foreground">
           Beautifully designed components built with Radix UI and Tailwind CSS.
+        </p>
+        <p className="text-sm text-muted-foreground/80">
+          If animations are not visible on Eleven Labs components, check that your system or browser has not enabled “reduce motion”.
         </p>
       </div>
       <ComponentsGrid byCategory={byCategory} />

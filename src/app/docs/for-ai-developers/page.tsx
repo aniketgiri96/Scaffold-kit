@@ -72,6 +72,10 @@ export default function ForAiDevelopersPage() {
             <Link href="/ml" className="text-primary underline hover:no-underline">ML Components</Link> for the list.
           </li>
           <li>
+            <strong className="text-foreground">voice</strong> — Voice / ElevenLabs-style components (slug, name, description, installCommand). Use for orbs, waveforms, speech input, transcript viewer, etc. Install with <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">npx ai-scaffold-kit add @voice/&lt;slug&gt;</code>; see{" "}
+            <Link href="/components#eleven-labs" className="text-primary underline hover:no-underline">Components → Eleven Labs</Link> for the list.
+          </li>
+          <li>
             <strong className="text-foreground">recipes</strong> — slug, name, description, blockSlugs (ordered), layoutHint. Use for full-screen flows; <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">GET /api/recipes/&lt;slug&gt;</code> returns blocks with code for each.
           </li>
         </ul>

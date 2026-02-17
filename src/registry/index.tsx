@@ -38,6 +38,21 @@ import { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableC
 import { Toggle, toggleVariants } from "@/components/ui/toggle"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { Terminal, CreditCard, User, Settings, Keyboard, LogOut, Plus, Cloud, Github, LifeBuoy, Mail, MessageSquare, PlusCircle, UserPlus, Users, ChevronRight, Share, MoreVertical, Bold, Italic, Underline } from "lucide-react"
+import {
+  BarVisualizerDemo,
+  ConversationDemo,
+  LiveWaveformDemo,
+  MessageDemo,
+  MicSelectorDemo,
+  OrbDemo,
+  ResponseDemo,
+  ShimmeringTextDemo,
+  SpeechInputDemo,
+  TranscriptViewerDemo,
+  VoiceButtonDemo,
+  VoicePickerDemo,
+  WaveformDemo,
+} from "@/components/elevenlabs-demos"
 
 export type ComponentCategory =
   | "Forms"
@@ -46,6 +61,7 @@ export type ComponentCategory =
   | "Layout"
   | "Feedback"
   | "Navigation"
+  | "Voice"
 
 export const registry: Record<string, {
   name: string;
@@ -53,6 +69,7 @@ export const registry: Record<string, {
   category: ComponentCategory;
   component: React.ReactNode;
   code: string;
+  cliInstallCommand?: string;
   examples?: { title: string; component: React.ReactNode; code: string }[];
 }> = {
   button: {
@@ -1594,6 +1611,1150 @@ export function ToggleGroupDemo() {
   )
 }
 `,
+  },
+  "bar-visualizer": {
+    name: "Bar Visualizer",
+    description: "Animated frequency bars for voice assistant states (listening, speaking, etc.).",
+    category: "Voice",
+    component: <BarVisualizerDemo />,
+    code: `"use client"
+
+import { useState } from "react"
+import {
+  BarVisualizer,
+  type AgentState,
+} from "@/components/ui/bar-visualizer"
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+
+export function BarVisualizerDemo() {
+  const [state, setState] = useState<AgentState>("listening")
+
+  return (
+    <Card className="">
+      <CardHeader>
+        <CardTitle>Audio Frequency Visualizer</CardTitle>
+        <CardDescription>
+          Real-time frequency band visualization with animated state transitions
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <BarVisualizer
+            state={state}
+            demo={true}
+            barCount={20}
+            minHeight={15}
+            maxHeight={90}
+            className="h-40 max-w-full"
+          />
+          <div className="flex flex-wrap gap-2">
+            <Button
+              size="sm"
+              variant={state === "connecting" ? "default" : "outline"}
+              onClick={() => setState("connecting")}
+            >
+              Connecting
+            </Button>
+            <Button
+              size="sm"
+              variant={state === "initializing" ? "default" : "outline"}
+              onClick={() => setState("initializing")}
+            >
+              Initializing
+            </Button>
+            <Button
+              size="sm"
+              variant={state === "listening" ? "default" : "outline"}
+              onClick={() => setState("listening")}
+            >
+              Listening
+            </Button>
+            <Button
+              size="sm"
+              variant={state === "speaking" ? "default" : "outline"}
+              onClick={() => setState("speaking")}
+            >
+              Speaking
+            </Button>
+            <Button
+              size="sm"
+              variant={state === "thinking" ? "default" : "outline"}
+              onClick={() => setState("thinking")}
+            >
+              Thinking
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+`,
+    cliInstallCommand: "npx ai-scaffold-kit add @voice/bar-visualizer",
+  },
+  conversation: {
+    name: "Conversation",
+    description: "Scrollable conversation container with stick-to-bottom and empty state.",
+    category: "Voice",
+    component: <ConversationDemo />,
+    code: `"use client"
+
+import { useEffect, useState } from "react"
+import { Card } from "@/components/ui/card"
+import {
+  Conversation,
+  ConversationContent,
+  ConversationEmptyState,
+  ConversationScrollButton,
+} from "@/components/ui/conversation"
+import { Message, MessageContent } from "@/components/ui/message"
+import { Orb } from "@/components/ui/orb"
+import { Response } from "@/components/ui/response"
+
+const allMessages = [
+  { id: "1", role: "user", parts: [{ type: "text", text: "Hey, I need help with my order" }] },
+  {
+    id: "2",
+    role: "assistant",
+    parts: [{
+      type: "text",
+      tokens: ["Hi!", " I'd", " be", " happy", " to", " help", " you", " with", " your", " order.", " Could", " you", " please", " provide", " your", " order", " number?"],
+      text: "Hi! I'd be happy to help you with your order. Could you please provide your order number?",
+    }],
+  },
+  { id: "3", role: "user", parts: [{ type: "text", text: "It's ORDER-12345" }] },
+  {
+    id: "4",
+    role: "assistant",
+    parts: [{
+      type: "text",
+      tokens: ["Thank", " you!", " Let", " me", " pull", " up", " your", " order", " details.", " I", " can", " see", " that", " your", " order", " was", " placed", " on", " March", " 15th", " and", " is", " currently", " being", " processed.", " It", " should", " ship", " within", " the", " next", " 1-2", " business", " days.", " Is", " there", " anything", " specific", " you'd", " like", " to", " know", " about", " this", " order?"],
+      text: "Thank you! Let me pull up your order details. I can see that your order was placed on March 15th and is currently being processed. It should ship within the next 1-2 business days. Is there anything specific you'd like to know about this order?",
+    }],
+  },
+  { id: "5", role: "user", parts: [{ type: "text", text: "Can I change the shipping address?" }] },
+  {
+    id: "6",
+    role: "assistant",
+    parts: [{
+      type: "text",
+      tokens: ["Absolutely!", " Since", " the", " order", " hasn't", " shipped", " yet,", " I", " can", " update", " the", " shipping", " address", " for", " you.", " What", " would", " you", " like", " the", " new", " address", " to", " be?"],
+      text: "Absolutely! Since the order hasn't shipped yet, I can update the shipping address for you. What would you like the new address to be?",
+    }],
+  },
+]
+
+const ConversationDemo = () => {
+  const [messages, setMessages] = useState<typeof allMessages>([])
+  const [streamingMessageIndex, setStreamingMessageIndex] = useState<number | null>(null)
+  const [streamingContent, setStreamingContent] = useState("")
+
+  useEffect(() => {
+    const timeouts: NodeJS.Timeout[] = []
+    const intervals: NodeJS.Timeout[] = []
+    let currentMessageIndex = 0
+
+    const addNextMessage = () => {
+      if (currentMessageIndex >= allMessages.length) return
+      const message = allMessages[currentMessageIndex]
+      const part = message.parts[0]
+      if (message.role === "assistant" && "tokens" in part && part.tokens) {
+        setStreamingMessageIndex(currentMessageIndex)
+        setStreamingContent("")
+        let currentContent = ""
+        let tokenIndex = 0
+        const streamInterval = setInterval(() => {
+          if (tokenIndex < part.tokens.length) {
+            currentContent += part.tokens[tokenIndex]
+            setStreamingContent(currentContent)
+            tokenIndex++
+          } else {
+            clearInterval(streamInterval)
+            setMessages((prev) => [...prev, message])
+            setStreamingMessageIndex(null)
+            setStreamingContent("")
+            currentMessageIndex++
+            timeouts.push(setTimeout(addNextMessage, 500))
+          }
+        }, 100)
+        intervals.push(streamInterval)
+      } else {
+        setMessages((prev) => [...prev, message])
+        currentMessageIndex++
+        timeouts.push(setTimeout(addNextMessage, 800))
+      }
+    }
+    timeouts.push(setTimeout(addNextMessage, 1000))
+    return () => {
+      timeouts.forEach((timeout) => clearTimeout(timeout))
+      intervals.forEach((interval) => clearInterval(interval))
+    }
+  }, [])
+
+  return (
+    <Card className="relative mx-auto my-0 size-full h-[400px] py-0">
+      <div className="flex h-full flex-col">
+        <Conversation>
+          <ConversationContent>
+            {messages.length === 0 && streamingMessageIndex === null ? (
+              <ConversationEmptyState
+                icon={<Orb className="size-12" />}
+                title="Start a conversation"
+                description="This is a simulated conversation"
+              />
+            ) : (
+              <>
+                {messages.map((message) => (
+                  <Message from={message.role} key={message.id}>
+                    <MessageContent>
+                      {message.parts.map((part, i) => {
+                        switch (part.type) {
+                          case "text":
+                            return <Response key={\`\${message.id}-\${i}\`}>{part.text}</Response>
+                          default:
+                            return null
+                        }
+                      })}
+                    </MessageContent>
+                    {message.role === "assistant" && (
+                      <div className="ring-border size-8 overflow-hidden rounded-full ring-1">
+                        <Orb className="h-full w-full" agentState={null} />
+                      </div>
+                    )}
+                  </Message>
+                ))}
+                {streamingMessageIndex !== null && (
+                  <Message from={allMessages[streamingMessageIndex].role} key={\`streaming-\${streamingMessageIndex}\`}>
+                    <MessageContent>
+                      <Response>{streamingContent || "\\u200B"}</Response>
+                    </MessageContent>
+                    {allMessages[streamingMessageIndex].role === "assistant" && (
+                      <div className="ring-border size-8 overflow-hidden rounded-full ring-1">
+                        <Orb className="h-full w-full" agentState="talking" />
+                      </div>
+                    )}
+                  </Message>
+                )}
+              </>
+            )}
+          </ConversationContent>
+          <ConversationScrollButton />
+        </Conversation>
+      </div>
+    </Card>
+  )
+}
+
+export { ConversationDemo }
+`,
+    cliInstallCommand: "npx ai-scaffold-kit add @voice/conversation",
+  },
+  "live-waveform": {
+    name: "Live Waveform",
+    description: "Real-time waveform visualization from microphone or audio stream.",
+    category: "Voice",
+    component: <LiveWaveformDemo />,
+    code: `"use client"
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { LiveWaveform } from "@/components/ui/live-waveform"
+
+export function LiveWaveformDemo() {
+  const [active, setActive] = useState(false)
+  const [processing, setProcessing] = useState(false)
+  const [mode, setMode] = useState<"static" | "scrolling">("static")
+
+  const handleToggleActive = () => {
+    setActive(!active)
+    if (!active) {
+      setProcessing(false)
+    }
+  }
+
+  const handleToggleProcessing = () => {
+    setProcessing(!processing)
+    if (!processing) {
+      setActive(false)
+    }
+  }
+
+  return (
+    <div className="bg-card w-full rounded-lg border p-6">
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold">Live Audio Waveform</h3>
+        <p className="text-muted-foreground text-sm">
+          Real-time microphone input visualization with audio reactivity
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        <LiveWaveform
+          active={active}
+          processing={processing}
+          height={80}
+          barWidth={3}
+          barGap={2}
+          mode={mode}
+          fadeEdges={true}
+          barColor="gray"
+          historySize={120}
+        />
+
+        <div className="flex flex-wrap justify-center gap-2">
+          <Button
+            size="sm"
+            variant={active ? "default" : "outline"}
+            onClick={handleToggleActive}
+          >
+            {active ? "Stop" : "Start"} Listening
+          </Button>
+          <Button
+            size="sm"
+            variant={processing ? "default" : "outline"}
+            onClick={handleToggleProcessing}
+          >
+            {processing ? "Stop" : "Start"} Processing
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => setMode(mode === "static" ? "scrolling" : "static")}
+          >
+            Mode: {mode === "static" ? "Static" : "Scrolling"}
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
+`,
+    cliInstallCommand: "npx ai-scaffold-kit add @voice/live-waveform",
+  },
+  message: {
+    name: "Message",
+    description: "Chat message bubble with user/assistant variants and avatar.",
+    category: "Voice",
+    component: <MessageDemo />,
+    code: `"use client"
+
+import { useEffect, useState } from "react"
+import { Message, MessageContent } from "@/components/ui/message"
+import { Orb } from "@/components/ui/orb"
+import { Response } from "@/components/ui/response"
+
+const assistantMessageTokens = [
+  "To", " create", " a", " new", " agent", " with", " **", "ElevenLabs", " Agents", "**", ",",
+  " head", " to", " this", " link", ":", " ", "[", "https://elevenlabs.io/app/agents", "](",
+  "https://elevenlabs.io/app/agents", ")", ".", "\\n\\n", "1.", " Sign", " in", " to", " your",
+  " ElevenLabs", " account", ".", "\\n", "2.", " Click", " **New", " Agent**", " to", " start", ".",
+  "\\n", "3.", " Give", " your", " agent", " a", " name", " and", " description", ".", "\\n", "4.",
+  " Configure", " its", " behavior", ",", " knowledge", " sources", ",", " and", " voice", ".",
+  "\\n", "5.", " Save", " it", " —", " and", " your", " agent", " is", " ready", " to", " use", ".",
+]
+
+const MessageDemo = () => {
+  const [content, setContent] = useState("\\u200B")
+  const [isStreaming, setIsStreaming] = useState(false)
+
+  useEffect(() => {
+    let currentContent = ""
+    let index = 0
+    const startTimeout = setTimeout(() => setIsStreaming(true), 500)
+    const interval = setInterval(() => {
+      if (index < assistantMessageTokens.length) {
+        currentContent += assistantMessageTokens[index]
+        setContent(currentContent)
+        index++
+      } else {
+        clearInterval(interval)
+        setIsStreaming(false)
+      }
+    }, 100)
+    return () => {
+      clearInterval(interval)
+      clearTimeout(startTimeout)
+    }
+  }, [])
+
+  return (
+    <>
+      <style>{\`
+        .message-demo-lists ol,
+        .message-demo-lists ul {
+          padding-left: 1.25rem !important;
+        }
+        .message-demo-lists li {
+          margin-left: 0 !important;
+        }
+      \`}</style>
+      <div className="flex h-full max-h-[400px] w-full max-w-2xl flex-col overflow-hidden">
+        <div className="flex flex-col gap-4 overflow-y-auto px-4 py-4">
+          <div className="flex-shrink-0">
+            <Message from="user">
+              <MessageContent>
+                <Response>How do I create an agent?</Response>
+              </MessageContent>
+            </Message>
+          </div>
+          <div className="message-demo-lists flex-shrink-0">
+            <Message from="assistant">
+              <MessageContent>
+                <Response>{content}</Response>
+              </MessageContent>
+              <div className="ring-border size-8 overflow-hidden rounded-full ring-1">
+                <Orb className="h-full w-full" agentState={isStreaming ? "talking" : null} />
+              </div>
+            </Message>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+export { MessageDemo }
+`,
+    cliInstallCommand: "npx ai-scaffold-kit add @voice/message",
+  },
+  "mic-selector": {
+    name: "Mic Selector",
+    description: "Dropdown to select microphone device with mute and live waveform.",
+    category: "Voice",
+    component: <MicSelectorDemo />,
+    code: `"use client"
+
+import { useCallback, useEffect, useRef, useState } from "react"
+import { Disc, Pause, Play, Trash2 } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import { LiveWaveform } from "@/components/ui/live-waveform"
+import { MicSelector } from "@/components/ui/mic-selector"
+import { Separator } from "@/components/ui/separator"
+
+type RecordingState = "idle" | "loading" | "recording" | "recorded" | "playing"
+
+export function MicSelectorDemo() {
+  const [selectedDevice, setSelectedDevice] = useState<string>("")
+  const [isMuted, setIsMuted] = useState(false)
+  const [state, setState] = useState<RecordingState>("idle")
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
+
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
+  const audioChunksRef = useRef<Blob[]>([])
+  const audioElementRef = useRef<HTMLAudioElement | null>(null)
+
+  const startRecording = useCallback(async () => {
+    try {
+      setState("loading")
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: selectedDevice ? { deviceId: { exact: selectedDevice } } : true,
+      })
+      const mediaRecorder = new MediaRecorder(stream)
+      mediaRecorderRef.current = mediaRecorder
+      audioChunksRef.current = []
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) audioChunksRef.current.push(event.data)
+      }
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(audioChunksRef.current, { type: "audio/webm" })
+        setAudioBlob(blob)
+        stream.getTracks().forEach((track) => track.stop())
+        setState("recorded")
+      }
+      mediaRecorder.start()
+      setState("recording")
+    } catch (error) {
+      console.error("Error starting recording:", error)
+      setState("idle")
+    }
+  }, [selectedDevice])
+
+  const stopRecording = useCallback(() => {
+    if (mediaRecorderRef.current && state === "recording") {
+      mediaRecorderRef.current.stop()
+    }
+  }, [state])
+
+  const playRecording = useCallback(() => {
+    if (!audioBlob) return
+    const audio = new Audio(URL.createObjectURL(audioBlob))
+    audioElementRef.current = audio
+    audio.onended = () => setState("recorded")
+    audio.play()
+    setState("playing")
+  }, [audioBlob])
+
+  const pausePlayback = useCallback(() => {
+    if (audioElementRef.current) {
+      audioElementRef.current.pause()
+      setState("recorded")
+    }
+  }, [])
+
+  const restart = useCallback(() => {
+    if (audioElementRef.current) {
+      audioElementRef.current.pause()
+      audioElementRef.current = null
+    }
+    setAudioBlob(null)
+    audioChunksRef.current = []
+    setState("idle")
+  }, [])
+
+  useEffect(() => {
+    if (isMuted && state === "recording") stopRecording()
+  }, [isMuted, state, stopRecording])
+
+  useEffect(() => {
+    return () => {
+      if (mediaRecorderRef.current) mediaRecorderRef.current.stop()
+      if (audioElementRef.current) audioElementRef.current.pause()
+    }
+  }, [])
+
+  const showWaveform = state === "recording" && !isMuted
+  const showProcessing = state === "loading" || state === "playing"
+  const showRecorded = state === "recorded"
+
+  return (
+    <div className="flex min-h-[200px] w-full items-center justify-center p-4">
+      <Card className="m-0 w-full max-w-2xl border p-0 shadow-lg">
+        <div className="flex w-full flex-wrap items-center justify-between gap-2 p-2">
+          <div className="h-8 w-full min-w-0 flex-1 md:w-[200px] md:flex-none">
+            <div className={cn("flex h-full items-center gap-2 rounded-md py-1", "bg-foreground/5 text-foreground/70")}>
+              <div className="h-full min-w-0 flex-1">
+                <div className="relative flex h-full w-full shrink-0 items-center justify-center overflow-hidden rounded-sm">
+                  <LiveWaveform
+                    key={state}
+                    active={showWaveform}
+                    processing={showProcessing}
+                    deviceId={selectedDevice}
+                    barWidth={3}
+                    barGap={1}
+                    barRadius={4}
+                    fadeEdges={true}
+                    fadeWidth={24}
+                    sensitivity={1.8}
+                    smoothingTimeConstant={0.85}
+                    height={20}
+                    mode="scrolling"
+                    className={cn("h-full w-full transition-opacity duration-300", state === "idle" && "opacity-0")}
+                  />
+                  {state === "idle" && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-foreground/50 text-xs font-medium">Start Recording</span>
+                    </div>
+                  )}
+                  {showRecorded && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-foreground/50 text-xs font-medium">Ready to Play</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex w-full flex-wrap items-center justify-center gap-1 md:w-auto">
+            <MicSelector
+              value={selectedDevice}
+              onValueChange={setSelectedDevice}
+              muted={isMuted}
+              onMutedChange={setIsMuted}
+              disabled={state === "recording" || state === "loading"}
+            />
+            <Separator orientation="vertical" className="mx-1 -my-2.5" />
+            <div className="flex">
+              {state === "idle" && (
+                <Button variant="ghost" size="icon" onClick={startRecording} disabled={isMuted} aria-label="Start recording">
+                  <Disc className="size-5" />
+                </Button>
+              )}
+              {(state === "loading" || state === "recording") && (
+                <Button variant="ghost" size="icon" onClick={stopRecording} disabled={state === "loading"} aria-label="Stop recording">
+                  <Pause className="size-5" />
+                </Button>
+              )}
+              {showRecorded && (
+                <Button variant="ghost" size="icon" onClick={playRecording} aria-label="Play recording">
+                  <Play className="size-5" />
+                </Button>
+              )}
+              {state === "playing" && (
+                <Button variant="ghost" size="icon" onClick={pausePlayback} aria-label="Pause playback">
+                  <Pause className="size-5" />
+                </Button>
+              )}
+              <Separator orientation="vertical" className="mx-1 -my-2.5" />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={restart}
+                disabled={state === "idle" || state === "loading" || state === "recording"}
+                aria-label="Delete recording"
+              >
+                <Trash2 className="size-5" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Card>
+    </div>
+  )
+}
+`,
+    cliInstallCommand: "npx ai-scaffold-kit add @voice/mic-selector",
+  },
+  orb: {
+    name: "Orb",
+    description: "3D orb visualization that reacts to agent state and volume.",
+    category: "Voice",
+    component: <OrbDemo />,
+    code: `"use client"
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { AgentState, Orb } from "@/components/ui/orb"
+
+let ORBS: [string, string][] = [
+  ["#CADCFC", "#A0B9D1"],
+  ["#F6E7D8", "#E0CFC2"],
+  ["#E5E7EB", "#9CA3AF"],
+]
+
+export function OrbDemo({ small = false }: { small?: boolean }) {
+  const [agent, setAgent] = useState<AgentState>(null)
+
+  ORBS = small ? [ORBS[0]] : ORBS
+
+  return (
+    <div className="bg-card w-full rounded-lg border p-6">
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold">Agent Orbs</h3>
+        <p className="text-muted-foreground text-sm">
+          Interactive orb visualization with agent states
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        <div className="flex justify-center gap-8">
+          {ORBS.map((colors, index) => (
+            <div
+              key={index}
+              className={\`relative \${index === 1 ? "block md:block" : "hidden md:block"}\`}
+            >
+              <div className="bg-muted relative h-32 w-32 rounded-full p-1 shadow-[inset_0_2px_8px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_2px_8px_rgba(0,0,0,0.5)]">
+                <div className="bg-background h-full w-full overflow-hidden rounded-full shadow-[inset_0_0_12px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_0_12px_rgba(0,0,0,0.3)]">
+                  <Orb
+                    colors={colors}
+                    seed={(index + 1) * 1000}
+                    agentState={agent}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => setAgent(null)}
+            disabled={agent === null}
+          >
+            Idle
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => setAgent("listening")}
+            disabled={agent === "listening"}
+          >
+            Listening
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            disabled={agent === "talking"}
+            onClick={() => setAgent("talking")}
+          >
+            Talking
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
+`,
+    cliInstallCommand: "npx ai-scaffold-kit add @voice/orb",
+  },
+  response: {
+    name: "Response",
+    description: "Streaming markdown response renderer for AI replies.",
+    category: "Voice",
+    component: <ResponseDemo />,
+    code: `"use client"
+
+import { useEffect, useState } from "react"
+import { Response } from "@/components/ui/response"
+
+const tokens = [
+  "### Welcome", "\\n\\n", "This", " is", " a", " **rich", " markdown", "**", " showcase", " with", " multiple", " features.", "\\n\\n",
+  "---", "\\n\\n", "## Data Table", "\\n\\n", "| Name", " | Role", " | Status", " |", "\\n", "|------|------|--------|", "\\n",
+  "| Alice", " | Engineer", " | Active", " |", "\\n", "| Bob", " | Designer", " | Active", " |", "\\n", "| Carol", " | PM", " | Active", " |", "\\n\\n",
+  "## Inspiration", "\\n\\n", "> *Simplicity", " is", " the", " ultimate", " sophistication.*", "\\n", "> —", " Leonardo", " da", " Vinci", "\\n\\n",
+  "## Inline", " and", " Block", " Code", "\\n\\n", "Use", " \`let", " total", " =", " items.length\`", " to", " count", " elements.", "\\n\\n",
+  "\`\`\`", "python", "\\n", "def", " greet(name):", "\\n", "    return", ' f"Hello, {name}!"', "\\n", 'print(greet("World"))', "\\n", "\`\`\`", "\\n\\n",
+  "## Math", "\\n\\n", "Inline", " math:", " $a^2", " +", " b^2", " =", " c^2$", ".", "\\n\\n", "Displayed", " equation:", "\\n\\n",
+  "$$", "\\n", "\\\\int_0^1", " x^2", " dx", " =", " \\\\frac{1}{3}", "\\n", "$$", "\\n\\n",
+]
+
+const ResponseDemo = () => {
+  const [content, setContent] = useState("")
+  useEffect(() => {
+    let currentContent = ""
+    let index = 0
+    const interval = setInterval(() => {
+      if (index < tokens.length) {
+        currentContent += tokens[index]
+        setContent(currentContent)
+        index++
+      } else clearInterval(interval)
+    }, 100)
+    return () => clearInterval(interval)
+  }, [])
+  return (
+    <div className="h-full min-h-0 w-full overflow-hidden">
+      <Response className="h-full overflow-auto p-10">{content}</Response>
+    </div>
+  )
+}
+
+export { ResponseDemo }
+`,
+    cliInstallCommand: "npx ai-scaffold-kit add @voice/response",
+  },
+  "shimmering-text": {
+    name: "Shimmering Text",
+    description: "Text with a shimmer animation effect.",
+    category: "Voice",
+    component: <ShimmeringTextDemo />,
+    code: `"use client"
+
+import { useEffect, useState } from "react"
+import { AnimatePresence, motion } from "motion/react"
+import { ShimmeringText } from "@/components/ui/shimmering-text"
+
+const phrases = [
+  "Agent is thinking...",
+  "Processing your request...",
+  "Analyzing the data...",
+  "Generating response...",
+  "Almost there...",
+]
+
+export function ShimmeringTextDemo() {
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % phrases.length)
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <div className="bg-card w-full rounded-lg border p-6">
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold">Text Shimmer Effect</h3>
+        <p className="text-muted-foreground text-sm">
+          Animated gradient text with automatic cycling
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        <div className="bg-muted/10 flex items-center justify-center rounded-lg py-8">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ShimmeringText text={phrases[currentIndex]} />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
+  )
+}
+`,
+    cliInstallCommand: "npx ai-scaffold-kit add @voice/shimmering-text",
+  },
+  "speech-input": {
+    name: "Speech Input",
+    description: "Microphone input with real-time transcription via ElevenLabs Scribe.",
+    category: "Voice",
+    component: <SpeechInputDemo />,
+    code: `"use client"
+
+import { useRef, useState } from "react"
+import { toast } from "sonner"
+import { getScribeToken } from "@/registry/elevenlabs-ui/blocks/realtime-transcriber-01/actions/get-scribe-token"
+import { Input } from "@/components/ui/input"
+import {
+  SpeechInput,
+  SpeechInputCancelButton,
+  SpeechInputPreview,
+  SpeechInputRecordButton,
+} from "@/components/ui/speech-input"
+import { Textarea } from "@/components/ui/textarea"
+
+async function getToken() {
+  const result = await getScribeToken()
+  if (result.error) throw new Error(result.error)
+  return result.token!
+}
+
+function TextareaWithSpeechInputRight() {
+  const [value, setValue] = useState("")
+  const valueAtStartRef = useRef("")
+  return (
+    <div className="relative">
+      <Textarea
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Jot down some thoughts..."
+        className="min-h-[120px] resize-none rounded-2xl px-3.5 pt-3 pb-14"
+      />
+      <div className="absolute right-3 bottom-3 flex items-center gap-2">
+        <SpeechInput
+          size="sm"
+          getToken={getToken}
+          onStart={() => { valueAtStartRef.current = value }}
+          onChange={({ transcript }) => { setValue(valueAtStartRef.current + transcript) }}
+          onStop={({ transcript }) => { setValue(valueAtStartRef.current + transcript) }}
+          onCancel={() => { setValue(valueAtStartRef.current) }}
+          onError={(error) => toast.error(String(error))}
+        >
+          <SpeechInputCancelButton />
+          <SpeechInputPreview placeholder="Listening..." />
+          <SpeechInputRecordButton />
+        </SpeechInput>
+      </div>
+    </div>
+  )
+}
+
+function TextareaWithSpeechInputLeft() {
+  const [value, setValue] = useState("")
+  const valueAtStartRef = useRef("")
+  return (
+    <div className="relative">
+      <Textarea
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Jot down some thoughts..."
+        className="min-h-[120px] resize-none rounded-2xl px-3.5 pt-3 pb-14"
+      />
+      <div className="absolute bottom-3 left-3 flex items-center gap-2">
+        <SpeechInput
+          size="sm"
+          getToken={getToken}
+          onStart={() => { valueAtStartRef.current = value }}
+          onChange={({ transcript }) => { setValue(valueAtStartRef.current + transcript) }}
+          onStop={({ transcript }) => { setValue(valueAtStartRef.current + transcript) }}
+          onCancel={() => { setValue(valueAtStartRef.current) }}
+          onError={(error) => toast.error(String(error))}
+        >
+          <SpeechInputRecordButton />
+          <SpeechInputPreview placeholder="Listening..." />
+          <SpeechInputCancelButton />
+        </SpeechInput>
+      </div>
+    </div>
+  )
+}
+
+function InputWithSpeechInput() {
+  const [value, setValue] = useState("")
+  const valueAtStartRef = useRef("")
+  return (
+    <div className="flex items-center gap-2.5">
+      <Input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Give this idea a title..."
+        className="min-w-0 flex-1 px-3.5 text-base transition-[flex-basis] duration-200 md:text-sm"
+      />
+      <SpeechInput
+        getToken={getToken}
+        className="shrink-0"
+        onStart={() => { valueAtStartRef.current = value }}
+        onChange={({ transcript }) => { setValue(valueAtStartRef.current + transcript) }}
+        onStop={({ transcript }) => { setValue(valueAtStartRef.current + transcript) }}
+        onCancel={() => { setValue(valueAtStartRef.current) }}
+        onError={(error) => toast.error(String(error))}
+      >
+        <SpeechInputCancelButton />
+        <SpeechInputRecordButton />
+      </SpeechInput>
+    </div>
+  )
+}
+
+export function SpeechInputDemo() {
+  return (
+    <div className="absolute inset-0 space-y-4 overflow-auto rounded-2xl p-10">
+      <TextareaWithSpeechInputRight />
+      <TextareaWithSpeechInputLeft />
+      <InputWithSpeechInput />
+    </div>
+  )
+}
+`,
+    cliInstallCommand: "npx ai-scaffold-kit add @voice/speech-input",
+  },
+  "transcript-viewer": {
+    name: "Transcript Viewer",
+    description: "Word-level transcript viewer synced with audio playback.",
+    category: "Voice",
+    component: <TranscriptViewerDemo />,
+    code: `"use client"
+
+import { useEffect, useState } from "react"
+import { PauseIcon, PlayIcon } from "lucide-react"
+import {
+  TranscriptViewerAudio,
+  TranscriptViewerContainer,
+  TranscriptViewerPlayPauseButton,
+  TranscriptViewerScrubBar,
+  TranscriptViewerWords,
+  type CharacterAlignmentResponseModel,
+} from "@/components/ui/transcript-viewer"
+import { Skeleton } from "@/components/ui/skeleton"
+
+const TranscriptViewerDemo = () => {
+  const audioSrc = "/sounds/transcript-viewer/transcript-viewer-audio.mp3"
+  const [alignment, setAlignment] = useState<CharacterAlignmentResponseModel | undefined>(undefined)
+
+  useEffect(() => {
+    fetch("/sounds/transcript-viewer/transcript-viewer-alignment.json")
+      .then((res) => res.json())
+      .then((data) => setAlignment(data))
+  }, [])
+
+  return (
+    <div className="flex w-full flex-col gap-4">
+      <TranscriptViewerContainer
+        key={audioSrc}
+        className="bg-card w-full rounded-xl border p-4"
+        audioSrc={audioSrc}
+        audioType="audio/mpeg"
+        alignment={
+          alignment ?? {
+            characters: [],
+            characterStartTimesSeconds: [],
+            characterEndTimesSeconds: [],
+          }
+        }
+      >
+        <TranscriptViewerAudio className="sr-only" />
+        {alignment ? (
+          <>
+            <TranscriptViewerWords />
+            <div className="flex items-center gap-3">
+              <TranscriptViewerScrubBar />
+            </div>
+          </>
+        ) : (
+          <div className="flex w-full flex-col gap-3">
+            <Skeleton className="h-5 w-full" />
+            <Skeleton className="mb-4 h-5 w-1/2" />
+            <Skeleton className="h-2 w-full" />
+            <div className="-mt-1 flex items-center justify-between">
+              <Skeleton className="h-2 w-6" />
+              <Skeleton className="h-2 w-6" />
+            </div>
+          </div>
+        )}
+        <TranscriptViewerPlayPauseButton
+          className="w-full cursor-pointer"
+          size="default"
+          disabled={!alignment}
+        >
+          {({ isPlaying }) => (
+            <>
+              {isPlaying ? (
+                <><PauseIcon className="size-4" /> Pause</>
+              ) : (
+                <><PlayIcon className="size-4" /> Play</>
+              )}
+            </>
+          )}
+        </TranscriptViewerPlayPauseButton>
+      </TranscriptViewerContainer>
+    </div>
+  )
+}
+
+export { TranscriptViewerDemo }
+`,
+    cliInstallCommand: "npx ai-scaffold-kit add @voice/transcript-viewer",
+  },
+  "voice-button": {
+    name: "Voice Button",
+    description: "Button for voice recording with state (idle, recording, processing).",
+    category: "Voice",
+    component: <VoiceButtonDemo />,
+    code: `"use client"
+
+import { useEffect, useState } from "react"
+import { VoiceButton } from "@/components/ui/voice-button"
+
+export function VoiceButtonDemo() {
+  const [state, setState] = useState<"idle" | "recording" | "processing" | "success" | "error">("idle")
+
+  const handlePress = () => {
+    if (state === "idle") {
+      setState("recording")
+    } else if (state === "recording") {
+      setState("processing")
+      setTimeout(() => {
+        setState("success")
+        setTimeout(() => setState("idle"), 1500)
+      }, 1000)
+    }
+  }
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.altKey && e.code === "Space") {
+        e.preventDefault()
+        handlePress()
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [state])
+
+  return (
+    <div className="flex min-h-[200px] w-full items-center justify-center">
+      <VoiceButton
+        label="Voice"
+        trailing="⌥Space"
+        state={state}
+        onPress={handlePress}
+        className="min-w-[180px]"
+      />
+    </div>
+  )
+}
+`,
+    cliInstallCommand: "npx ai-scaffold-kit add @voice/voice-button",
+  },
+  "voice-picker": {
+    name: "Voice Picker",
+    description: "Dropdown to select an ElevenLabs voice with preview.",
+    category: "Voice",
+    component: <VoicePickerDemo />,
+    code: `"use client"
+
+import { useState } from "react"
+import type { ElevenLabs } from "@elevenlabs/elevenlabs-js"
+import { VoicePicker } from "@/components/ui/voice-picker"
+
+const voices: ElevenLabs.Voice[] = [
+  {
+    voiceId: "21m00Tcm4TlvDq8ikWAM",
+    name: "Rachel",
+    category: "premade",
+    labels: { accent: "american", descriptive: "casual", age: "young", gender: "female", language: "en", use_case: "conversational" },
+    description: "Matter-of-fact, personable woman. Great for conversational use cases.",
+    previewUrl: "https://storage.googleapis.com/eleven-public-prod/premade/voices/21m00Tcm4TlvDq8ikWAM/b4928a68-c03b-411f-8533-3d5c299fd451.mp3",
+  },
+  {
+    voiceId: "29vD33N1CtxCmqQRPOHJ",
+    name: "Drew",
+    category: "premade",
+    labels: { accent: "american", description: "well-rounded", age: "middle_aged", gender: "male", use_case: "news" },
+    previewUrl: "https://storage.googleapis.com/eleven-public-prod/premade/voices/29vD33N1CtxCmqQRPOHJ/b99fc51d-12d3-4312-b480-a8a45a7d51ef.mp3",
+  },
+  {
+    voiceId: "2EiwWnXFnvU5JabPnv8n",
+    name: "Clyde",
+    category: "premade",
+    labels: { accent: "american", descriptive: "intense", age: "middle_aged", gender: "male", language: "en", use_case: "characters_animation" },
+    description: "Great for character use-cases",
+    previewUrl: "https://storage.googleapis.com/eleven-public-prod/premade/voices/2EiwWnXFnvU5JabPnv8n/65d80f52-703f-4cae-a91d-75d4e200ed02.mp3",
+  },
+]
+
+export function VoicePickerDemo() {
+  const [selectedVoice, setSelectedVoice] = useState<string>("21m00Tcm4TlvDq8ikWAM")
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="w-full max-w-lg">
+      <VoicePicker
+        voices={voices}
+        value={selectedVoice}
+        onValueChange={(value) => {
+          setSelectedVoice(value)
+          setOpen(true)
+        }}
+        open={open}
+        onOpenChange={setOpen}
+        placeholder="Select a voice..."
+      />
+    </div>
+  )
+}
+`,
+    cliInstallCommand: "npx ai-scaffold-kit add @voice/voice-picker",
+  },
+  waveform: {
+    name: "Waveform",
+    description: "Static or scrolling waveform from numeric data.",
+    category: "Voice",
+    component: <WaveformDemo />,
+    code: `"use client"
+
+import { ScrollingWaveform } from "@/components/ui/waveform"
+
+export function WaveformDemo() {
+  return (
+    <div className="bg-card w-full rounded-lg border p-6">
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold">Waveform</h3>
+        <p className="text-muted-foreground text-sm">
+          Real-time audio visualization with smooth scrolling animation
+        </p>
+      </div>
+      <ScrollingWaveform
+        height={80}
+        barWidth={3}
+        barGap={2}
+        speed={30}
+        fadeEdges={true}
+        barColor="gray"
+      />
+    </div>
+  )
+}
+`,
+    cliInstallCommand: "npx ai-scaffold-kit add @voice/waveform",
   },
 }
 

@@ -84,6 +84,15 @@ export async function GET(request: NextRequest) {
     }),
   }));
 
+  const voice = components
+    .filter((c) => c.category === "Voice")
+    .map((c) => ({
+      slug: c.slug,
+      name: c.name,
+      description: c.description,
+      installCommand: `npx ai-scaffold-kit add @voice/${c.slug}`,
+    }));
+
   const payload = {
     version: MANIFEST_VERSION,
     ...(requestedVersion && { requestedVersion }),
@@ -91,6 +100,7 @@ export async function GET(request: NextRequest) {
     templates,
     recipes,
     ml,
+    voice,
   };
 
   return NextResponse.json(payload, {
