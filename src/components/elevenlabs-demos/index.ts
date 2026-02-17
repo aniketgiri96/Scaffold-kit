@@ -2,6 +2,7 @@ export { BarVisualizerDemo } from "./BarVisualizerDemo";
 export { ConversationDemo } from "./ConversationDemo";
 export { LiveWaveformDemo } from "./LiveWaveformDemo";
 export { MessageDemo } from "./MessageDemo";
+export { GoogleMeetCardDemo } from "./GoogleMeetCardDemo";
 export { MicSelectorDemo } from "./MicSelectorDemo";
 export { OrbDemo } from "./OrbDemo";
 export { ResponseDemo } from "./ResponseDemo";
