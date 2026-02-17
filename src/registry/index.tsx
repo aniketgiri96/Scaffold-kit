@@ -49,6 +49,7 @@ import {
   ShimmeringTextDemo,
   SpeechInputDemo,
   TranscriptViewerDemo,
+  GoogleMeetCardDemo,
   VoiceButtonDemo,
   VoicePickerDemo,
   WaveformDemo,
@@ -62,6 +63,7 @@ export type ComponentCategory =
   | "Feedback"
   | "Navigation"
   | "Voice"
+  | "Google UI"
 
 export const registry: Record<string, {
   name: string;
@@ -2755,6 +2757,43 @@ export function WaveformDemo() {
 }
 `,
     cliInstallCommand: "npx ai-scaffold-kit add @voice/waveform",
+  },
+  "google-meet-card": {
+    name: "Google Meet Card",
+    description: "Glassmorphism card with one centered avatar, Google Meet style. Use the button to toggle the speaking state.",
+    category: "Google UI",
+    component: <GoogleMeetCardDemo />,
+    code: `"use client"
+
+import { useState, useEffect } from "react"
+import { GoogleMeetCard } from "@/components/ui/google-meet-card"
+
+export function GoogleMeetCardDemo() {
+  const [isSpeaking, setIsSpeaking] = useState(false)
+  const [isMuted, setIsMuted] = useState(false)
+
+  useEffect(() => {
+    const speakingInterval = setInterval(() => setIsSpeaking((p) => !p), 2500)
+    const muteInterval = setInterval(() => setIsMuted((p) => !p), 3500)
+    return () => {
+      clearInterval(speakingInterval)
+      clearInterval(muteInterval)
+    }
+  }, [])
+
+  return (
+    <div className="flex w-full max-w-sm flex-col items-center">
+      <div className="w-full">
+        <GoogleMeetCard
+          isSpeaking={isSpeaking}
+          isMuted={isMuted}
+          displayName="User"
+        />
+      </div>
+    </div>
+  )
+}
+`,
   },
 }
 

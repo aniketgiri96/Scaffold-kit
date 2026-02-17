@@ -13,6 +13,7 @@ function groupByCategory(): Record<string, { title: string; href: string }[]> {
 
 const SIDEBAR_CATEGORY_ORDER = [
     "Eleven Labs",
+    "Google UI",
     "Forms",
     "Data display",
     "Layout",

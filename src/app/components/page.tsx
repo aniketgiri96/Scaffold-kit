@@ -3,6 +3,7 @@ import { ComponentsGrid } from "@/components/components-grid";
 
 const CATEGORY_ORDER: ComponentCategory[] = [
   "Voice",
+  "Google UI",
   "Forms",
   "Data display",
   "Layout",
