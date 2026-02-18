@@ -54,7 +54,6 @@ import {
   VoicePickerDemo,
   WaveformDemo,
 } from "@/components/elevenlabs-demos"
-
 export type ComponentCategory =
   | "Forms"
   | "Overlay"
